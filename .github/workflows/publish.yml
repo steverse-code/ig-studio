@@ -15,6 +15,17 @@ on:
     - cron: "40 12 18 8 *" # 21:40 KST — laundry-labels
     - cron: "20 13 18 8 *" # 22:20 KST — visceral-fat
     - cron: "0 14 18 8 *"  # 23:00 KST — alcohol-limits
+    # 오늘 10편의 릴스 버전 — 8/19~8/22, 하루 2~3개씩 분산 발행. 끝난 뒤 정리 예정.
+    - cron: "15 0 19 8 *"  # 8/19 09:15 KST
+    - cron: "15 5 19 8 *"  # 8/19 14:15 KST
+    - cron: "15 11 19 8 *" # 8/19 20:15 KST
+    - cron: "15 0 20 8 *"  # 8/20 09:15 KST
+    - cron: "15 5 20 8 *"  # 8/20 14:15 KST
+    - cron: "15 11 20 8 *" # 8/20 20:15 KST
+    - cron: "15 1 21 8 *"  # 8/21 10:15 KST
+    - cron: "15 10 21 8 *" # 8/21 19:15 KST
+    - cron: "15 1 22 8 *"  # 8/22 10:15 KST
+    - cron: "15 10 22 8 *" # 8/22 19:15 KST
   workflow_dispatch:
     inputs:
       slug:

@@ -195,11 +195,20 @@ def save_queue(q: list[dict]) -> None:
 
 
 def pick_due(q: list[dict], now: datetime) -> dict | None:
-    """예정 시각이 지난 pending 중 가장 오래된 1건."""
+    """예정 시각이 지난 pending 중 가장 오래된 1건 (캐러셀)."""
     due = [e for e in q
            if e.get("status") == "pending"
            and datetime.fromisoformat(e["publish_at"]) <= now]
     return min(due, key=lambda e: e["publish_at"]) if due else None
+
+
+def pick_due_reel(q: list[dict], now: datetime) -> dict | None:
+    """예정 시각이 지난 pending 중 가장 오래된 1건 (릴스)."""
+    due = [e for e in q
+           if e.get("reel_status") == "pending"
+           and e.get("reel_publish_at")
+           and datetime.fromisoformat(e["reel_publish_at"]) <= now]
+    return min(due, key=lambda e: e["reel_publish_at"]) if due else None
 
 
 def main():
@@ -229,10 +238,19 @@ def main():
     if args.slug:
         entry = next((e for e in q if e["slug"] == args.slug), {"slug": args.slug, "status": "pending"})
     else:
-        entry = pick_due(q, now)
-        if not entry:
+        # 큐에서 캐러셀/릴스 중 가장 먼저 발행할 차례인 1건을 자동 선택한다.
+        carousel_entry = pick_due(q, now)
+        reel_entry = pick_due_reel(q, now)
+        candidates = []
+        if carousel_entry:
+            candidates.append(("carousel", carousel_entry, carousel_entry["publish_at"]))
+        if reel_entry:
+            candidates.append(("reel", reel_entry, reel_entry["reel_publish_at"]))
+        if not candidates:
             print("발행할 차례인 글이 없습니다. 종료.")
             return
+        kind, entry, _ = min(candidates, key=lambda c: c[2])
+        args.reel = kind == "reel"
 
     spec_path = os.path.join(ROOT, "content", f"{entry['slug']}.json")
     spec = json.load(open(spec_path, encoding="utf-8"))
