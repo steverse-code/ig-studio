@@ -1,0 +1,48 @@
+name: Publish to Instagram
+
+# 월·수·금 19:00 KST (= 10:00 UTC) 발행
+on:
+  schedule:
+    - cron: "0 10 * * 1,3,5"
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "특정 글 강제 발행 (비우면 큐에서 자동 선택)"
+        required: false
+      dry_run:
+        description: "실제 발행 없이 점검만"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Publish
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IMAGE_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}
+        run: |
+          ARGS=""
+          [ -n "${{ inputs.slug }}" ] && ARGS="$ARGS --slug ${{ inputs.slug }}"
+          [ "${{ inputs.dry_run }}" = "true" ] && ARGS="$ARGS --dry-run"
+          python3 scripts/publish.py $ARGS
+
+      - name: Update queue
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add queue.json
+          git diff --staged --quiet || git commit -m "publish: mark posted"
+          git push

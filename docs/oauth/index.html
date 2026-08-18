@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타그램 연동 · 인증 코드</title>
+<style>
+  :root{--bg:#F7F5F0;--panel:#fff;--ink:#14201C;--muted:#6B7A74;--line:#E3E0D8;--accent:#1F4A3D;--soft:#E4EDE7;--err:#9C2B24}
+  @media (prefers-color-scheme:dark){:root{--bg:#121514;--panel:#191D1B;--ink:#EDEDE7;--muted:#93A09A;--line:#2A302D;--accent:#7FC3AC;--soft:#1E2926;--err:#E58A80}}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo",sans-serif;line-height:1.6;padding:24px}
+  .card{width:100%;max-width:620px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:40px}
+  .kicker{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--accent);margin-bottom:14px}
+  h1{font-size:26px;margin:0 0 10px;letter-spacing:-.02em}
+  p.sub{color:var(--muted);margin:0 0 26px;font-size:15px}
+  .code{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:18px;
+        font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;word-break:break-all;
+        user-select:all;-webkit-user-select:all;max-height:200px;overflow:auto}
+  button{margin-top:16px;width:100%;padding:14px;border:0;border-radius:10px;background:var(--accent);
+         color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+  button:active{opacity:.85}
+  ol{margin:26px 0 0;padding-left:20px;color:var(--muted);font-size:14px}
+  ol li{margin-bottom:7px}
+  code{background:var(--soft);padding:2px 6px;border-radius:5px;font-size:13px;
+       font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ink)}
+  .err{color:var(--err)}
+  .hide{display:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="kicker">I N S T A G R A M   O A U T H</div>
+
+  <div id="ok" class="hide">
+    <h1>인증 코드를 받았습니다</h1>
+    <p class="sub">아래 코드를 복사해서 터미널의 <code>connect.py</code>에 붙여넣으세요.</p>
+    <div class="code" id="code"></div>
+    <button id="copy">코드 복사</button>
+    <ol>
+      <li>터미널로 돌아갑니다</li>
+      <li><code>인증 코드:</code> 프롬프트에 붙여넣고 Enter</li>
+      <li>이 코드는 <b>1회용</b>이며 몇 분 뒤 만료됩니다</li>
+    </ol>
+  </div>
+
+  <div id="no" class="hide">
+    <h1 class="err">인증 코드가 없습니다</h1>
+    <p class="sub" id="why">이 페이지는 인스타그램 승인 후 자동으로 이동되는 주소입니다.
+      직접 열면 코드가 표시되지 않습니다.</p>
+    <ol>
+      <li>터미널에서 <code>python3 scripts/connect.py</code> 를 다시 실행하세요</li>
+      <li>출력된 승인 링크를 열고 인스타그램 계정으로 승인하면 이 화면으로 돌아옵니다</li>
+    </ol>
+  </div>
+</div>
+
+<script>
+  var q = new URLSearchParams(location.search);
+  var code = q.get('code');
+  var error = q.get('error_description') || q.get('error');
+
+  if (code) {
+    document.getElementById('ok').className = '';
+    document.getElementById('code').textContent = code;
+    document.getElementById('copy').addEventListener('click', function () {
+      var btn = this;
+      var done = function () { btn.textContent = '복사됨'; setTimeout(function(){ btn.textContent = '코드 복사'; }, 1600); };
+      if (navigator.clipboard) { navigator.clipboard.writeText(code).then(done, done); }
+      else {
+        var r = document.createRange(); r.selectNode(document.getElementById('code'));
+        getSelection().removeAllRanges(); getSelection().addRange(r);
+        try { document.execCommand('copy'); } catch (e) {}
+        done();
+      }
+    });
+  } else {
+    document.getElementById('no').className = '';
+    if (error) document.getElementById('why').textContent = '인스타그램이 반환한 메시지: ' + error;
+  }
+</script>
+</body>
+</html>

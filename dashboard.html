@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인스타그램 자동 발행 · 운영 대시보드</title>
+<style>
+  :root{
+    --bg:#F7F5F0; --panel:#FFFFFF; --ink:#14201C; --muted:#6B7A74;
+    --line:#E3E0D8; --accent:#1F4A3D; --soft:#E4EDE7;
+    --clay:#9C4A24; --graphite:#2B2B33;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#121514; --panel:#191D1B; --ink:#EDEDE7; --muted:#93A09A;
+           --line:#2A302D; --accent:#7FC3AC; --soft:#1E2926; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+       line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:940px;margin:0 auto;padding:56px 24px 96px}
+  header{margin-bottom:44px}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--accent);margin-bottom:14px}
+  h1{font-size:clamp(28px,4.4vw,42px);line-height:1.2;margin:0 0 12px;letter-spacing:-.02em}
+  .sub{color:var(--muted);font-size:16px;margin:0}
+  section{margin-top:44px}
+  h2{font-size:19px;margin:0 0 4px;letter-spacing:-.01em}
+  .hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+
+  /* progress */
+  .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin:16px 0 8px}
+  .bar > i{display:block;height:100%;width:0;background:var(--accent);transition:width .35s ease}
+  .barlabel{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* checklist */
+  ul.check{list-style:none;margin:0;padding:0}
+  ul.check li{display:flex;gap:14px;padding:16px 20px;border-bottom:1px solid var(--line);align-items:flex-start;cursor:pointer}
+  ul.check li:last-child{border-bottom:0}
+  ul.check li:hover{background:var(--soft)}
+  .box{flex:0 0 20px;height:20px;margin-top:3px;border:2px solid var(--muted);border-radius:6px;
+       display:grid;place-items:center;transition:.15s}
+  .box svg{width:12px;height:12px;opacity:0;transform:scale(.6);transition:.15s}
+  li.done .box{background:var(--accent);border-color:var(--accent)}
+  li.done .box svg{opacity:1;transform:scale(1)}
+  li.done .txt strong{text-decoration:line-through;opacity:.5}
+  .txt strong{display:block;font-weight:600;font-size:15px}
+  .txt span{display:block;color:var(--muted);font-size:13.5px;margin-top:3px}
+  .tag{font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:99px;
+       background:var(--soft);color:var(--accent);margin-left:auto;flex:0 0 auto;white-space:nowrap}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:13px 20px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.08em;color:var(--muted);font-weight:700;text-transform:uppercase}
+  tr:last-child td{border-bottom:0}
+  .pill{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;color:#fff}
+  .p-l{background:var(--accent)} .p-s{background:var(--clay)} .p-f{background:var(--graphite)}
+  code{background:var(--soft);padding:2px 6px;border-radius:5px;font-size:13px;
+       font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card .n{font-size:30px;font-weight:800;letter-spacing:-.02em}
+  .card .l{font-size:13.5px;color:var(--muted);margin-top:4px}
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+  a{color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">I N S T A G R A M   A U T O M A T I O N</div>
+  <h1>근거 기반 카드뉴스<br>자동 발행 대시보드</h1>
+  <p class="sub">셋업은 한 번. 이후에는 매주 JSON 하나만 추가하면 월·수·금 19:00에 자동으로 올라갑니다.</p>
+</header>
+
+<div class="grid">
+  <div class="card"><div class="n">주 3회</div><div class="l">월·수·금 19:00 KST 자동 발행</div></div>
+  <div class="card"><div class="n">7장</div><div class="l">캐러셀 표준 구조</div></div>
+  <div class="card"><div class="n">~40분</div><div class="l">최초 셋업 소요 시간</div></div>
+  <div class="card"><div class="n">0원</div><div class="l">GitHub Actions · Meta API 무료 범위</div></div>
+</div>
+
+<section>
+  <h2>셋업 체크리스트</h2>
+  <p class="hint">클릭하면 완료 처리됩니다. 위에서부터 순서대로 진행하세요.</p>
+  <div class="bar"><i id="pbar"></i></div>
+  <div class="barlabel"><span id="pnum">0</span> / <span id="ptot">0</span> 완료</div>
+
+  <div class="panel" style="margin-top:16px">
+    <ul class="check" id="list">
+      <li data-tag="5분"><b></b><div class="txt"><strong>인스타그램 계정을 프로페셔널로 전환</strong><span>설정 → 계정 유형 및 도구 → 크리에이터 또는 비즈니스. Facebook 페이지 연결은 필요 없습니다.</span></div></li>
+      <li data-tag="10분"><b></b><div class="txt"><strong>Meta 개발자 앱 생성 (비즈니스 유형)</strong><span>developers.facebook.com/apps → 제품 추가 → Instagram → API setup with Instagram login</span></div></li>
+      <li data-tag="2분"><b></b><div class="txt"><strong>Instagram 앱 ID · 앱 시크릿 확보</strong><span>같은 화면에서 복사. Facebook 앱 자격증명이 아니라 Instagram 앱 자격증명입니다.</span></div></li>
+      <li data-tag="2분"><b></b><div class="txt"><strong>리디렉션 URI 등록</strong><span><code>http://localhost:8000/callback</code> 을 비즈니스 로그인 설정에 추가하고 저장</span></div></li>
+      <li data-tag="3분"><b></b><div class="txt"><strong>토큰 발급</strong><span><code>python3 scripts/auth.py --app-id … --app-secret …</code> → IG_USER_ID, IG_ACCESS_TOKEN 출력</span></div></li>
+      <li data-tag="5분"><b></b><div class="txt"><strong>GitHub Public 리포지토리 생성 후 push</strong><span>인스타그램이 공개 URL에서 이미지를 가져가므로 Public이어야 합니다. 비밀값은 Secrets에 안전하게 보관됩니다.</span></div></li>
+      <li data-tag="2분"><b></b><div class="txt"><strong>Secrets 등록: IG_USER_ID · IG_ACCESS_TOKEN</strong><span>Settings → Secrets and variables → Actions</span></div></li>
+      <li data-tag="선택"><b></b><div class="txt"><strong>토큰 자동 갱신 켜기 (GH_PAT)</strong><span>Secrets 읽기/쓰기 권한의 fine-grained PAT를 <code>GH_PAT</code>로 등록. 안 하면 60일마다 수동 갱신.</span></div></li>
+      <li data-tag="3분"><b></b><div class="txt"><strong>Render cardnews 워크플로 수동 실행</strong><span>out/ 아래 JPEG 7장이 커밋되면 렌더링 성공</span></div></li>
+      <li data-tag="3분"><b></b><div class="txt"><strong>Publish 워크플로 dry-run 리허설</strong><span>slug = 2026-08-17-vo2max, dry_run 체크. "이미지 접근 확인 완료" 로그 확인</span></div></li>
+      <li data-tag="발행"><b></b><div class="txt"><strong>첫 글 실제 발행</strong><span>dry_run 해제하고 실행. 이후는 cron이 알아서 합니다.</span></div></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>주간 발행 구조</h2>
+  <p class="hint">필러가 고정되어 있으면 매주 "뭘 올리지" 고민이 사라집니다.</p>
+  <div class="panel">
+    <table>
+      <thead><tr><th>요일</th><th>필러</th><th>다루는 것</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><b>월 19:00</b></td><td><span class="pill p-l">롱제비티</span></td><td>논문 1편 해부 — 수치 · 한계 · 실천</td><td>저장·공유. 계정 신뢰의 축</td></tr>
+        <tr><td><b>수 19:00</b></td><td><span class="pill p-s">라이프스타일</span></td><td>수면 · 식단 · 습관 · 환경</td><td>도달 확대. 진입장벽 낮은 소재</td></tr>
+        <tr><td><b>금 19:00</b></td><td><span class="pill p-f">패션</span></td><td>유행이 아니라 <b>판단 기준</b> — 소재 · 핏 · 구매</td><td>차별화. 경쟁 계정과 겹치지 않는 지점</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>카드뉴스 7장 구조</h2>
+  <p class="hint">4번 슬라이드가 이 포맷의 심장입니다. 통념을 뒤집는 자리가 없으면 저장이 나오지 않습니다.</p>
+  <div class="panel">
+    <table>
+      <thead><tr><th>#</th><th>타입</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><code>cover</code></td><td>후킹 헤드라인 + 무슨 근거인지 배지</td></tr>
+        <tr><td>2</td><td><code>stat</code></td><td>핵심 수치 하나. 액센트 배경이라 피드에서 눈에 띔</td></tr>
+        <tr><td>3</td><td><code>list</code></td><td>비교·맥락 — 이 숫자가 큰 건지 작은 건지</td></tr>
+        <tr><td><b>4</b></td><td><code>point</code></td><td><b>★ 진짜 메시지. 대부분 "사람들이 이 숫자를 잘못 읽는 지점"</b></td></tr>
+        <tr><td>5</td><td><code>list</code></td><td>이번 주 실천 3가지</td></tr>
+        <tr><td>6</td><td><code>quote</code></td><td>한계와 주의 — 여기서 신뢰가 생김</td></tr>
+        <tr><td>7</td><td><code>source</code></td><td>출처 + 저장·팔로우 CTA</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>매주 하는 일</h2>
+  <p class="hint">글 하나 = JSON 파일 하나 + 큐에 한 줄. push하면 나머지는 자동입니다.</p>
+  <div class="panel">
+    <table>
+      <tbody>
+        <tr><td style="width:34px"><b>1</b></td><td><code>content/2026-08-19-protein.json</code> 작성 — 슬라이드 · 캡션 · 해시태그</td></tr>
+        <tr><td><b>2</b></td><td><code>queue.json</code>에 <code>{"slug": …, "publish_at": …, "status": "pending"}</code> 한 줄 추가</td></tr>
+        <tr><td><b>3</b></td><td>push → 이미지 자동 렌더링 → 예약 시각에 자동 발행</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>막혔을 때</h2>
+  <div class="panel">
+    <table>
+      <thead><tr><th>증상</th><th>원인 · 조치</th></tr></thead>
+      <tbody>
+        <tr><td>이미지에 접근할 수 없습니다</td><td>리포가 Private이거나 render 워크플로가 아직 안 돌았습니다</td></tr>
+        <tr><td>HTTP 400 · OAuthException</td><td>토큰 만료. <b>Refresh Instagram token</b> 워크플로를 수동 실행</td></tr>
+        <tr><td>컨테이너 처리 실패</td><td>JPEG가 아니거나 8MB 초과. 렌더러 기본 출력은 안전 범위입니다</td></tr>
+        <tr><td>발행할 차례인 글이 없습니다</td><td>queue.json에 시각이 지난 <code>pending</code> 항목이 없습니다</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>
+  발행 방식: Instagram API with Instagram Login (Facebook 페이지 불필요) · 계정당 24시간 100건 제한 · 캐러셀은 1건으로 계산<br>
+  참고: <a href="https://developers.facebook.com/docs/instagram-platform/content-publishing/">Meta · Publish Content</a>
+</footer>
+
+</div>
+
+<script>
+  const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  const list = document.getElementById('list');
+  const items = [...list.querySelectorAll('li')];
+  const state = items.map(() => false);
+
+  items.forEach((li, i) => {
+    const b = li.querySelector('b');
+    b.outerHTML = '<div class="box">' + CHECK + '</div>';
+    const tag = document.createElement('div');
+    tag.className = 'tag';
+    tag.textContent = li.dataset.tag;
+    li.appendChild(tag);
+    li.addEventListener('click', () => {
+      state[i] = !state[i];
+      li.classList.toggle('done', state[i]);
+      update();
+    });
+  });
+
+  function update(){
+    const n = state.filter(Boolean).length;
+    document.getElementById('pnum').textContent = n;
+    document.getElementById('ptot').textContent = state.length;
+    document.getElementById('pbar').style.width = (n / state.length * 100) + '%';
+  }
+  update();
+</script>
+</body>
+</html>

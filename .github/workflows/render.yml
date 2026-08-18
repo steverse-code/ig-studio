@@ -1,0 +1,39 @@
+name: Render cardnews
+
+# content/*.json 이 바뀌면 슬라이드 이미지를 다시 렌더링해서 커밋한다.
+on:
+  push:
+    paths:
+      - "content/**.json"
+      - "scripts/cardnews.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pillow
+
+      - name: Render all posts
+        run: |
+          for f in content/*.json; do
+            echo "→ $f"
+            python3 scripts/cardnews.py "$f" out/
+          done
+
+      - name: Commit rendered slides
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add out/
+          git diff --staged --quiet || git commit -m "render: update cardnews slides"
+          git push
