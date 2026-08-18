@@ -6,5 +6,65 @@
     "status": "published",
     "media_id": "18146581285540402",
     "published_at": "2026-08-18T16:31:25.613011+09:00"
+  },
+  {
+    "slug": "2026-08-18-grip-strength",
+    "pillar": "longevity",
+    "publish_at": "2026-08-18T17:00:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-morning-light",
+    "pillar": "lifestyle",
+    "publish_at": "2026-08-18T17:40:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-resale-value",
+    "pillar": "fashion",
+    "publish_at": "2026-08-18T18:20:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-ultra-processed-food",
+    "pillar": "lifestyle",
+    "publish_at": "2026-08-18T19:00:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-shoulder-fit",
+    "pillar": "fashion",
+    "publish_at": "2026-08-18T19:40:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-step-count",
+    "pillar": "longevity",
+    "publish_at": "2026-08-18T20:20:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-coffee-mortality",
+    "pillar": "lifestyle",
+    "publish_at": "2026-08-18T21:00:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-laundry-labels",
+    "pillar": "fashion",
+    "publish_at": "2026-08-18T21:40:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-visceral-fat",
+    "pillar": "longevity",
+    "publish_at": "2026-08-18T22:20:00+09:00",
+    "status": "pending"
+  },
+  {
+    "slug": "2026-08-18-alcohol-limits",
+    "pillar": "lifestyle",
+    "publish_at": "2026-08-18T23:00:00+09:00",
+    "status": "pending"
   }
 ]
