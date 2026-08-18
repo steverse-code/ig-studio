@@ -11,7 +11,7 @@ import json
 import os
 import sys
 from dataclasses import dataclass, field
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageOps
 
 # ─────────────────────────────────────────────────────────────
 # 캔버스 / 그리드
@@ -23,6 +23,7 @@ FOOTER_H = 110          # 하단 핸들/인디케이터 영역
 TOP_BIAS = 0.40         # 세로 정렬: 0=위, 0.5=정중앙 (살짝 위가 안정적)
 
 FONT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "fonts")
+PHOTO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "photos")
 _FCACHE: dict = {}
 
 
@@ -55,6 +56,52 @@ THEMES = {
 }
 
 PILLAR_LABEL = {"longevity": "LONGEVITY", "lifestyle": "LIFESTYLE", "fashion": "FASHION"}
+
+
+# ─────────────────────────────────────────────────────────────
+# 배경 사진 — 듀오톤(테마 색) + 색 워시로 가독성 확보
+# ─────────────────────────────────────────────────────────────
+def _hex(h: str):
+    h = h.lstrip("#")
+    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+
+
+def _mix(c1, c2, t):
+    return tuple(int(c1[i] + (c2[i] - c1[i]) * t) for i in range(3))
+
+
+def _darken(hex_color: str, amt: float = 0.55) -> str:
+    return "#%02x%02x%02x" % _mix(_hex(hex_color), (0, 0, 0), amt)
+
+
+def _cover_crop(img: Image.Image, w: int, h: int) -> Image.Image:
+    sw, sh = img.size
+    scale = max(w / sw, h / sh)
+    nw, nh = max(1, int(sw * scale + 0.5)), max(1, int(sh * scale + 0.5))
+    img = img.resize((nw, nh), Image.LANCZOS)
+    x, y = (nw - w) // 2, (nh - h) // 2
+    return img.crop((x, y, x + w, y + h))
+
+
+def _duotone(gray: Image.Image, dark_hex: str, light_hex: str) -> Image.Image:
+    return ImageOps.colorize(gray, black=dark_hex, white=light_hex).convert("RGB")
+
+
+def photo_bases(photo_name: str, th: "Theme"):
+    """포스트 배경 사진 → (일반 슬라이드용, stat 슬라이드용) 듀오톤 베이스 이미지."""
+    path = os.path.join(PHOTO_DIR, photo_name)
+    gray = ImageOps.autocontrast(Image.open(path).convert("L"), cutoff=1)
+    gray = _cover_crop(gray, W, H)
+
+    bg_duo = _duotone(gray, th.ink, th.bg)
+    bg_wash = Image.new("RGB", (W, H), th.bg)
+    bg = Image.blend(bg_duo, bg_wash, 0.66)
+
+    stat_duo = _duotone(gray, _darken(th.accent, 0.6), th.accent)
+    stat_wash = Image.new("RGB", (W, H), th.accent)
+    stat = Image.blend(stat_duo, stat_wash, 0.58)
+
+    return bg, stat
 
 
 # ─────────────────────────────────────────────────────────────
@@ -210,7 +257,6 @@ def slide_point(draw, s, th, meta, idx, total):
 
 
 def slide_stat(draw, s, th, meta, idx, total):
-    draw.rectangle([0, 0, W, H], fill=th.accent)
     if s.get("eyebrow"):
         draw.text((MARGIN, MARGIN + 24), " ".join(s["eyebrow"]), font=font("Bold", 26), fill="#FFFFFFB0")
 
@@ -310,9 +356,19 @@ def render_post(spec: dict, outdir: str) -> list[str]:
     th = THEMES.get(spec.get("pillar", "default"), THEMES["default"])
     slides = spec["slides"]
     os.makedirs(outdir, exist_ok=True)
+
+    photo = spec.get("photo")
+    bg_base = stat_base = None
+    if photo:
+        bg_base, stat_base = photo_bases(photo, th)
+
     paths = []
     for i, s in enumerate(slides):
-        img = Image.new("RGB", (W, H), th.bg)
+        if photo:
+            base = stat_base if s["type"] == "stat" else bg_base
+            img = base.copy()
+        else:
+            img = Image.new("RGB", (W, H), th.accent if s["type"] == "stat" else th.bg)
         draw = ImageDraw.Draw(img)
         RENDERERS[s["type"]](draw, s, th, spec, i, len(slides))
         p = os.path.join(outdir, f"{spec['slug']}_{i+1:02d}.jpg")
