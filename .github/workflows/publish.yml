@@ -24,6 +24,10 @@ on:
         description: "실제 발행 없이 점검만"
         type: boolean
         default: false
+      reel:
+        description: "캐러셀 대신 릴스(mp4)로 발행 (slug 필수)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -47,6 +51,7 @@ jobs:
           ARGS=""
           [ -n "${{ inputs.slug }}" ] && ARGS="$ARGS --slug ${{ inputs.slug }}"
           [ "${{ inputs.dry_run }}" = "true" ] && ARGS="$ARGS --dry-run"
+          [ "${{ inputs.reel }}" = "true" ] && ARGS="$ARGS --reel"
           python3 scripts/publish.py $ARGS
 
       - name: Update queue

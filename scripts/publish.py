@@ -15,6 +15,7 @@ Instagram API with Instagram Login (Facebook 페이지 불필요)
   python3 scripts/publish.py              # 큐에서 발행할 차례인 글 1건 발행
   python3 scripts/publish.py --dry-run    # 실제 발행 없이 점검만
   python3 scripts/publish.py --slug 2026-08-17-vo2max   # 특정 글 강제 발행
+  python3 scripts/publish.py --slug 2026-08-17-vo2max --reel   # 같은 글을 릴스(mp4)로 발행
 """
 from __future__ import annotations
 
@@ -79,17 +80,17 @@ def slide_urls(spec: dict, base: str) -> list[str]:
     return [f"{base}/out/{spec['slug']}/{spec['slug']}_{i+1:02d}.jpg" for i in range(n)]
 
 
-def check_reachable(urls: list[str]) -> None:
-    """인스타그램은 공개 URL에서 이미지를 가져간다. 미리 확인."""
+def check_reachable(urls: list[str], expect: tuple[str, ...] = ("jpeg", "jpg")) -> None:
+    """인스타그램은 공개 URL에서 미디어를 가져간다. 미리 확인."""
     for u in urls:
         req = urllib.request.Request(u, method="HEAD")
         try:
             with urllib.request.urlopen(req, timeout=30) as r:
                 ct = r.headers.get("Content-Type", "")
-                if "jpeg" not in ct and "jpg" not in ct:
-                    raise RuntimeError(f"JPEG가 아닙니다 ({ct}): {u}")
+                if not any(e in ct for e in expect):
+                    raise RuntimeError(f"{'/'.join(expect)}가 아닙니다 ({ct}): {u}")
         except Exception as e:
-            raise RuntimeError(f"이미지에 접근할 수 없습니다: {u}\n  {e}") from None
+            raise RuntimeError(f"미디어에 접근할 수 없습니다: {u}\n  {e}") from None
 
 
 def wait_ready(container_id: str, token: str, tries: int = 30, delay: int = 5) -> None:
@@ -146,6 +147,37 @@ def publish(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = False
 
 
 # ─────────────────────────────────────────────────────────────
+def publish_reel(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = False) -> str | None:
+    """카드뉴스 슬라이드로 만든 릴스(mp4)를 발행한다."""
+    caption = build_caption(spec)
+    url = f"{base_url.rstrip('/')}/out/{spec['slug']}/{spec['slug']}_reel.mp4"
+
+    print(f"▸ [릴스] {spec['slug']} · 캡션 {len(caption)}자")
+    check_reachable([url], expect=("mp4", "video"))
+    print("  영상 접근 확인 완료")
+
+    if dry:
+        print("  [dry-run] 여기서 중단합니다.")
+        print("   ", url)
+        return None
+
+    container = post(f"/{ig_id}/media",
+                     media_type="REELS",
+                     video_url=url,
+                     caption=caption,
+                     access_token=token)
+    print(f"  릴스 컨테이너 {container['id']} — 영상 처리 대기 중")
+    wait_ready(container["id"], token, tries=60, delay=10)
+
+    published = post(f"/{ig_id}/media_publish", creation_id=container["id"], access_token=token)
+    media_id = published["id"]
+
+    info = get(f"/{media_id}", fields="permalink,timestamp", access_token=token)
+    print(f"✅ 릴스 발행 완료 → {info.get('permalink')}")
+    return media_id
+
+
+# ─────────────────────────────────────────────────────────────
 def load_queue() -> list[dict]:
     if not os.path.exists(QUEUE):
         return []
@@ -168,7 +200,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--slug", help="큐를 무시하고 특정 글 발행")
+    ap.add_argument("--reel", action="store_true", help="캐러셀 대신 릴스(mp4)로 발행 (--slug 필수)")
     args = ap.parse_args()
+
+    if args.reel and not args.slug:
+        sys.exit("--reel 은 --slug 와 함께 사용해야 합니다.")
 
     ig_id = os.environ.get("IG_USER_ID")
     token = os.environ.get("IG_ACCESS_TOKEN")
@@ -194,6 +230,15 @@ def main():
 
     spec_path = os.path.join(ROOT, "content", f"{entry['slug']}.json")
     spec = json.load(open(spec_path, encoding="utf-8"))
+
+    if args.reel:
+        media_id = publish_reel(spec, ig_id, token, base, dry=args.dry_run)
+        if media_id and entry in q:
+            entry["reel_status"] = "published"
+            entry["reel_media_id"] = media_id
+            entry["reel_published_at"] = now.isoformat()
+            save_queue(q)
+        return
 
     media_id = publish(spec, ig_id, token, base, dry=args.dry_run)
 
