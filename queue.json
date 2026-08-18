@@ -51,9 +51,11 @@
     "slug": "2026-08-18-shoulder-fit",
     "pillar": "fashion",
     "publish_at": "2026-08-18T19:40:00+09:00",
-    "status": "pending",
+    "status": "published",
     "reel_publish_at": "2026-08-20T14:15:00+09:00",
-    "reel_status": "pending"
+    "reel_status": "pending",
+    "media_id": "18012774731931326",
+    "published_at": "2026-08-18T20:01:14.628780+09:00"
   },
   {
     "slug": "2026-08-18-step-count",
