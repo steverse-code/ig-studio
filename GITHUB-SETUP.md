@@ -163,9 +163,67 @@ https://<사용자명(소문자)>.github.io/ig-studio/oauth/
 **"인증 코드가 없습니다"** 화면이 뜨면 정상입니다.
 이 주소가 Meta 앱에 등록할 **리디렉션 URI** 입니다. (끝 슬래시 포함)
 
-> 404 라면 아직 배포 중입니다. **Actions** 탭에서 `pages build and deployment`
-> 가 초록색으로 끝났는지 확인하세요. 폴더를 `/docs` 가 아니라 `/ (root)` 로
-> 잡았다면 다시 설정하세요.
+### "There isn't a GitHub Pages site here" 가 뜬다면
+
+이건 그 주소에 **아직 사이트가 게시되지 않았다**는 GitHub의 기본 404 화면입니다.
+어느 단계에서 끊겼는지 자동으로 짚어주는 스크립트를 넣어뒀습니다.
+
+```bash
+cd ~/Documents/ig-studio
+python3 scripts/pages_doctor.py
+```
+
+세 곳을 순서대로 확인합니다.
+
+```
+① 리포지토리     https://github.com/<사용자>/<리포>
+② docs/ push 여부  https://raw.githubusercontent.com/<사용자>/<리포>/main/docs/oauth/index.html
+③ Pages 배포      https://<사용자>.github.io/<리포>/oauth/
+```
+
+어디서 처음 실패하는지가 그대로 원인입니다.
+
+| 처음 실패하는 곳 | 원인 | 조치 |
+|---|---|---|
+| **①** 404 | 리포가 없거나 **Private** | 철자 확인. Private이면 Settings → Danger Zone → **Change visibility → Public** (무료 플랜은 Private에서 Pages가 안 됩니다) |
+| **②** 404 | `docs/` 가 아직 push 안 됨 | `git add -A && git commit -m "add docs" && git push -u origin main` |
+| **③** 404 | Pages 설정 안 됨 / 폴더 잘못 / 배포 중 | 아래 세 가지 확인 |
+
+#### ③에서 걸렸을 때 확인할 세 가지
+
+**1) Pages 를 아직 켜지 않았다** — 가장 흔합니다
+
+`https://github.com/<사용자>/<리포>/settings/pages` 로 직접 가서
+Source가 `Deploy from a branch` 인지, Branch가 `main`, Folder가 `/docs` 인지 확인하고
+**Save** 를 누르세요. Save를 눌러야 배포가 시작됩니다.
+
+**2) 폴더를 `/ (root)` 로 잡았다**
+
+우리 콜백 페이지는 `docs/oauth/index.html` 에 있습니다.
+루트로 잡으면 `/oauth/` 경로에 아무것도 없어서 404가 납니다.
+`/docs` 로 바꾸고 Save 하면 재배포됩니다.
+
+**3) 아직 배포 중이다**
+
+첫 배포는 1~3분 걸립니다. `Actions` 탭에서
+`pages build and deployment` 워크플로가 초록색으로 끝났는지 보세요.
+회색(대기)이나 노란색(진행 중)이면 그냥 기다리면 됩니다.
+
+#### 브랜치가 `master` 인 경우
+
+오래된 git 설정이면 기본 브랜치가 `master` 일 수 있습니다.
+그러면 Pages 설정의 Branch도 `master` 로 맞춰야 합니다. 확인:
+
+```bash
+git -C ~/Documents/ig-studio rev-parse --abbrev-ref HEAD
+```
+
+`main` 으로 통일하고 싶다면:
+
+```bash
+git branch -M main
+git push -u origin main
+```
 
 ---
 
@@ -244,7 +302,7 @@ https://<사용자명(소문자)>.github.io/ig-studio/oauth/
 | `push` 시 `Authentication failed` | 비밀번호 대신 PAT를 넣어야 합니다. B의 인증 항목 참고 |
 | `push` 시 `rejected / fetch first` | 원격에 이미 커밋이 있음. A의 "기존 리포에 덮어쓰기" 참고 |
 | 리포 이름이 이미 있다고 나옴 | A의 "이미 ig-studio 라는 이름이 있습니다" 참고 |
-| Pages 주소가 404 | 폴더를 `/docs` 로 설정했는지, 배포가 끝났는지 확인 |
+| `There isn't a GitHub Pages site here` | C의 해당 섹션 — `python3 scripts/pages_doctor.py` |
 | 렌더 워크플로가 `permission denied` | D의 **Read and write permissions** 를 안 켠 것입니다 |
 | `이미지에 접근할 수 없습니다` | 리포가 Private 이거나 렌더 워크플로가 아직 안 돌았습니다 |
 | Actions 탭이 비어 있음 | 워크플로 파일이 push 되지 않았습니다. `.github/workflows/` 확인 |
