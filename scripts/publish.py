@@ -80,12 +80,18 @@ def slide_urls(spec: dict, base: str) -> list[str]:
     return [f"{base}/out/{spec['slug']}/{spec['slug']}_{i+1:02d}.jpg" for i in range(n)]
 
 
-def check_reachable(urls: list[str], expect: tuple[str, ...] = ("jpeg", "jpg")) -> None:
-    """인스타그램은 공개 URL에서 미디어를 가져간다. 미리 확인."""
+def check_reachable(urls: list[str], expect: tuple[str, ...] | None = ("jpeg", "jpg")) -> None:
+    """인스타그램은 공개 URL에서 미디어를 가져간다. 미리 확인.
+
+    GitHub raw는 mp4에 Content-Type을 application/octet-stream으로 내려줘서
+    (jpeg와 달리) 타입 검증이 무의미하다 — expect=None이면 200 응답만 확인한다.
+    """
     for u in urls:
         req = urllib.request.Request(u, method="HEAD")
         try:
             with urllib.request.urlopen(req, timeout=30) as r:
+                if expect is None:
+                    continue
                 ct = r.headers.get("Content-Type", "")
                 if not any(e in ct for e in expect):
                     raise RuntimeError(f"{'/'.join(expect)}가 아닙니다 ({ct}): {u}")
@@ -153,7 +159,7 @@ def publish_reel(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = 
     url = f"{base_url.rstrip('/')}/out/{spec['slug']}/{spec['slug']}_reel.mp4"
 
     print(f"▸ [릴스] {spec['slug']} · 캡션 {len(caption)}자")
-    check_reachable([url], expect=("mp4", "video"))
+    check_reachable([url], expect=None)
     print("  영상 접근 확인 완료")
 
     if dry:
