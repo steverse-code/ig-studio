@@ -27,10 +27,14 @@ PHOTO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "asse
 _FCACHE: dict = {}
 
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 def font(weight: str, size: int) -> ImageFont.FreeTypeFont:
     key = (weight, size)
     if key not in _FCACHE:
-        _FCACHE[key] = ImageFont.truetype(os.path.join(FONT_DIR, f"Pretendard-{weight}.otf"), size)
+        name = "Serif-Bold.ttf" if weight == "Serif" else f"Pretendard-{weight}.otf"
+        _FCACHE[key] = ImageFont.truetype(os.path.join(FONT_DIR, name), size)
     return _FCACHE[key]
 
 
@@ -44,14 +48,16 @@ class Theme:
     muted: str
     accent: str
     accent_soft: str
+    dark: str = "#0D1210"
+    anchor: str = "#FFFFFF14"
     on_accent: str = "#FFFFFF"
     dot_off: str = "#C9C5BC"
 
 
 THEMES = {
-    "longevity": Theme("#F7F5F0", "#14201C", "#6B7A74", "#1F4A3D", "#E4EDE7"),
-    "lifestyle": Theme("#F8F5F1", "#221A14", "#7C6E62", "#9C4A24", "#F2E4DA"),
-    "fashion":   Theme("#F5F4F2", "#1A1A1F", "#75757F", "#2B2B33", "#E7E4DC"),
+    "longevity": Theme("#F7F5F0", "#14201C", "#6B7A74", "#1F4A3D", "#E4EDE7", dark="#0C1512"),
+    "lifestyle": Theme("#F8F5F1", "#221A14", "#7C6E62", "#9C4A24", "#F2E4DA", dark="#17100B"),
+    "fashion":   Theme("#F5F4F2", "#1A1A1F", "#75757F", "#2B2B33", "#E7E4DC", dark="#101014"),
     "default":   Theme("#F7F5F0", "#16150F", "#6E6A5F", "#3A4A2F", "#E8EAE1"),
 }
 
@@ -102,6 +108,18 @@ def photo_bases(photo_name: str, th: "Theme"):
     stat = Image.blend(stat_duo, stat_wash, 0.58)
 
     return bg, stat
+
+
+def blend(fg: str, bg: str) -> str:
+    """#RRGGBBAA 를 배경색 위에 미리 합성해 불투명 hex 로 돌려준다.
+    Pillow 는 RGB 캔버스에서 fill 의 알파를 무시하므로 직접 계산한다."""
+    fg = fg.lstrip("#")
+    if len(fg) <= 6:
+        return "#" + fg
+    a = int(fg[6:8], 16) / 255
+    f = [int(fg[i:i+2], 16) for i in (0, 2, 4)]
+    b = [int(bg.lstrip("#")[i:i+2], 16) for i in (0, 2, 4)]
+    return "#" + "".join(f"{round(f[i]*a + b[i]*(1-a)):02X}" for i in range(3))
 
 
 # ─────────────────────────────────────────────────────────────
@@ -211,14 +229,14 @@ def draw_kicker(draw, text, th, y=MARGIN):
 
 
 def draw_footer(draw, th, handle, idx, total, on_dark=False):
-    hcol = "#FFFFFF99" if on_dark else th.muted
+    hcol = blend("#FFFFFF99", th.accent) if on_dark else th.muted
     draw.text((MARGIN, H - MARGIN - 14), handle, font=font("Medium", 24), fill=hcol)
     r, gap = 5, 20
     x = W - MARGIN - (total * gap - (gap - r * 2))
     cy = H - MARGIN - 2
     for i in range(total):
         if on_dark:
-            c = "#FFFFFF" if i == idx else "#FFFFFF55"
+            c = "#FFFFFF" if i == idx else blend("#FFFFFF55", th.accent)
         else:
             c = th.accent if i == idx else th.dot_off
         draw.ellipse([x, cy - r, x + r * 2, cy + r], fill=c)
@@ -228,22 +246,92 @@ def draw_footer(draw, th, handle, idx, total, on_dark=False):
 # ─────────────────────────────────────────────────────────────
 # 슬라이드 타입
 # ─────────────────────────────────────────────────────────────
-def slide_cover(draw, s, th, meta, idx, total):
-    draw_kicker(draw, PILLAR_LABEL.get(meta.get("pillar"), "NOTE"), th)
+def _center(draw, text, f, y, fill, lh, max_w=CONTENT_W):
+    """중앙 정렬 다중행 출력 → 마지막 y"""
+    for ln in _wrap(draw, text, f, max_w):
+        w = draw.textlength(ln, font=f)
+        draw.text(((W - w) / 2, y), ln, font=f, fill=fill)
+        y += lh
+    return y
 
-    st = Stack(draw)
-    st.text(s["headline"], "ExtraBold", 96, 52, th.ink, max_h=640, ratio=1.22)
+
+def _spaced(draw, text, f, y, fill, tracking=6):
+    """자간을 벌린 중앙 정렬 워드마크"""
+    widths = [draw.textlength(c, font=f) for c in text]
+    total_w = sum(widths) + tracking * (len(text) - 1)
+    x = (W - total_w) / 2
+    for c, cw in zip(text, widths):
+        draw.text((x, y), c, font=f, fill=fill)
+        x += cw + tracking
+
+
+def slide_cover(img, draw, s, th, meta, idx, total):
+    """에디토리얼 표지 — 사진(선택) + 하단 중앙 2행 헤드라인 + 중앙 워드마크"""
+    ink = "#FFFFFF"
+    bg = s.get("bg_image")
+    base = "#0A0C0B" if bg else th.dark
+
+    if bg:
+        path = bg if os.path.isabs(bg) else os.path.join(ROOT_DIR, bg)
+        photo = Image.open(path).convert("RGB")
+        r = max(W / photo.width, H / photo.height)
+        photo = photo.resize((int(photo.width * r + 1), int(photo.height * r + 1)), Image.LANCZOS)
+        photo = photo.crop(((photo.width - W) // 2, (photo.height - H) // 2,
+                            (photo.width - W) // 2 + W, (photo.height - H) // 2 + H))
+        img.paste(photo, (0, 0))
+        # 하단 스크림 — 텍스트 가독성 확보
+        scrim = Image.new("L", (1, H))
+        for y in range(H):
+            t = max(0.0, (y - H * 0.34) / (H * 0.66))
+            scrim.putpixel((0, y), int(238 * (t ** 1.35)))
+        img.paste(Image.new("RGB", (W, H), "#07090A"), (0, 0), scrim.resize((W, H)))
+    else:
+        img.paste(Image.new("RGB", (W, H), th.dark), (0, 0))
+        # 사진이 없을 때의 시각 앵커 — 대형 저대비 타이포
+        if s.get("anchor"):
+            fa = font("Black", 400)
+            aw = draw.textlength(s["anchor"], font=fa)
+            draw.text(((W - aw) / 2, H * 0.16), s["anchor"], font=fa, fill=blend(th.anchor, th.dark))
+
+    # 상단 날짜/카테고리 라인
+    top = s.get("eyebrow") or PILLAR_LABEL.get(meta.get("pillar"), "")
+    if top:
+        ft = font("Medium", 25)
+        label = f"| {' '.join(top)} |"
+        tw = draw.textlength(label, font=ft)
+        draw.text(((W - tw) / 2, MARGIN - 8), label, font=ft, fill=blend("#FFFFFF9E", base))
+
+    # 하단 블록: 헤드라인 + 워드마크
+    head_txt = s["headline"]
+    fh, lines, lh = fit(draw, head_txt, "ExtraBold", CONTENT_W - 40, 420, 74, 46, 1.30)
+    sub_h = 0
     if s.get("subline"):
-        st.gap(48).text(s["subline"], "Regular", 38, 28, th.muted, max_h=260, ratio=1.52)
-    st.render_centered(top=MARGIN + 130, bottom=H - FOOTER_H - 110, bias=0.42)
+        fs, sl, slh = fit(draw, s["subline"], "Medium", CONTENT_W - 80, 140, 30, 22, 1.5)
+        sub_h = len(sl) * slh + 22
 
-    draw.rectangle([MARGIN, H - MARGIN - 116, MARGIN + 120, H - MARGIN - 110], fill=th.accent)
-    if s.get("badge"):
-        draw.text((MARGIN, H - MARGIN - 92), s["badge"], font=font("SemiBold", 26), fill=th.accent)
-    draw_footer(draw, th, meta.get("handle", ""), idx, total)
+    mark = (meta.get("wordmark") or meta.get("handle", "")).lstrip("@").upper()
+    fm = font("Serif", 27)
+    block_h = len(lines) * lh + sub_h + 66
+    y = H - FOOTER_H - 34 - block_h
+
+    y = _center(draw, head_txt, fh, y, ink, lh, CONTENT_W - 40)
+    if s.get("subline"):
+        y += 22
+        y = _center(draw, s["subline"], fs, y, blend("#FFFFFFB8", base), slh, CONTENT_W - 80)
+    if mark:
+        _spaced(draw, mark, fm, y + 30, blend("#FFFFFFD0", base), tracking=7)
+
+    # 페이지 인디케이터만 (핸들은 워드마크로 대체)
+    r, gap = 5, 20
+    x = W - MARGIN - (total * gap - (gap - r * 2))
+    cy = H - MARGIN - 2
+    for i in range(total):
+        draw.ellipse([x, cy - r, x + r * 2, cy + r],
+                     fill="#FFFFFF" if i == idx else blend("#FFFFFF44", base))
+        x += gap
 
 
-def slide_point(draw, s, th, meta, idx, total):
+def slide_point(img, draw, s, th, meta, idx, total):
     num = str(s.get("index") or f"{idx:02d}")
     draw.text((MARGIN, MARGIN - 10), num, font=font("Black", 68), fill=th.accent_soft)
 
@@ -256,7 +344,7 @@ def slide_point(draw, s, th, meta, idx, total):
     draw_footer(draw, th, meta.get("handle", ""), idx, total)
 
 
-def slide_stat(draw, s, th, meta, idx, total):
+def slide_stat(img, draw, s, th, meta, idx, total):
     if s.get("eyebrow"):
         draw.text((MARGIN, MARGIN + 24), " ".join(s["eyebrow"]), font=font("Bold", 26), fill="#FFFFFFB0")
 
@@ -275,7 +363,7 @@ def slide_stat(draw, s, th, meta, idx, total):
     draw_footer(draw, th, meta.get("handle", ""), idx, total, on_dark=True)
 
 
-def slide_list(draw, s, th, meta, idx, total):
+def slide_list(img, draw, s, th, meta, idx, total):
     st = Stack(draw)
     st.text(s["title"], "Bold", 58, 38, th.ink, max_h=220, ratio=1.26)
     st.gap(32).rule(72, 3, th.accent).gap(56)
@@ -306,7 +394,7 @@ def slide_list(draw, s, th, meta, idx, total):
     draw_footer(draw, th, meta.get("handle", ""), idx, total)
 
 
-def slide_quote(draw, s, th, meta, idx, total):
+def slide_quote(img, draw, s, th, meta, idx, total):
     draw.text((MARGIN - 8, MARGIN - 20), "“", font=font("Black", 170), fill=th.accent_soft)
 
     st = Stack(draw)
@@ -319,7 +407,7 @@ def slide_quote(draw, s, th, meta, idx, total):
     draw_footer(draw, th, meta.get("handle", ""), idx, total)
 
 
-def slide_source(draw, s, th, meta, idx, total):
+def slide_source(img, draw, s, th, meta, idx, total):
     # CTA 박스는 하단 고정
     cta_top = H - FOOTER_H
     if s.get("cta"):
@@ -364,13 +452,16 @@ def render_post(spec: dict, outdir: str) -> list[str]:
 
     paths = []
     for i, s in enumerate(slides):
-        if photo:
+        if s["type"] == "cover":
+            # 표지는 자체적으로 배경을 그린다 (사진 합성 또는 dark+anchor 타이포)
+            img = Image.new("RGB", (W, H), th.dark)
+        elif photo:
             base = stat_base if s["type"] == "stat" else bg_base
             img = base.copy()
         else:
             img = Image.new("RGB", (W, H), th.accent if s["type"] == "stat" else th.bg)
         draw = ImageDraw.Draw(img)
-        RENDERERS[s["type"]](draw, s, th, spec, i, len(slides))
+        RENDERERS[s["type"]](img, draw, s, th, spec, i, len(slides))
         p = os.path.join(outdir, f"{spec['slug']}_{i+1:02d}.jpg")
         img.save(p, "JPEG", quality=92, subsampling=0, optimize=True)
         paths.append(p)
