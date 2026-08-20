@@ -1,0 +1,100 @@
+{
+  "pillar": "aging_news",
+  "handle": "@insteverse",
+  "slug": "2026-08-20-semaglutide-aging",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "노화·의학",
+      "headline": "체중 줄이려고 맞던 주사가\n노화 속도까지 늦췄습니다",
+      "subline": "세마글루타이드 32주 임상시험 결과",
+      "anchor": "9%"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "DUNEDINPACE",
+      "value": "9%",
+      "label": "위약군 대비 생물학적 노화 속도가 느려진 정도",
+      "note": "무작위배정 · 이중맹검 · 위약대조 임상시험, 참가자 108명, 32주 (Nature Communications, 2026)"
+    },
+    {
+      "type": "list",
+      "title": "9%는 큰 숫자일까요",
+      "items": [
+        {
+          "t": "이번 연구 — 세마글루타이드 32주",
+          "d": "DunedinPACE 9% 감소 (n=108, HIV 관련 지방이상분포증 성인)"
+        },
+        {
+          "t": "CALERIE 임상시험 — 칼로리 25% 제한 2년",
+          "d": "DunedinPACE 2~3% 감소 (n=220, Nature Aging, 2022)"
+        },
+        {
+          "t": "비교 기준",
+          "d": "두 연구 모두 같은 후성유전학 시계(DunedinPACE)로 측정"
+        }
+      ]
+    },
+    {
+      "type": "point",
+      "title": "이 결과, 나에게도 적용될까요",
+      "body": "이번 연구 참가자 108명은 전부 HIV 관련 지방이상분포증을 가진 성인이었습니다. 만성 염증 수치가 높은 특수 집단이라, 건강한 일반 성인에게 같은 효과가 나타나는지는 아직 확인되지 않았습니다."
+    },
+    {
+      "type": "list",
+      "title": "이 소식이 말해주는 것",
+      "items": [
+        {
+          "t": "후성유전학 시계는 대리지표",
+          "d": "DunedinPACE·PCGrimAge 변화가 실제 수명 연장으로 이어지는지는 장기 추적이 필요합니다"
+        },
+        {
+          "t": "이미 승인된 약의 새로운 관찰",
+          "d": "세마글루타이드는 체중감량·당뇨 치료제로 이미 쓰이던 약 — 노화 억제를 목표로 한 임상시험 단계는 아직 없습니다"
+        },
+        {
+          "t": "다음에 확인할 것",
+          "d": "HIV가 없는 일반 성인 대상 대조군 연구와 32주 이후의 장기 추적 결과"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "세마글루타이드가 노화를 되돌리거나 사람을 더 젊게 만든다고 말하는 게 아닙니다.",
+      "by": "Michael Corley, UC샌디에이고 의과대학 (연구책임자)"
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "Corley et al., \"Semaglutide slows epigenetic aging in a randomized trial of HIV-associated lipohypertrophy,\" Nature Communications, 2026 (DOI: 10.1038/s41467-026-72861-3)",
+        "UC San Diego Today 보도자료, 2026.07",
+        "Waziry et al., \"Effect of long-term caloric restriction on DNA methylation measures of biological aging... (CALERIE trial),\" Nature Aging, 2022"
+      ],
+      "cta": "저장해두고 다음 노화 소식과 비교해보세요"
+    }
+  ],
+  "caption": "비만 치료제로 쓰던 주사가 노화 속도까지 늦췄습니다.\n\n108명 대상 32주 임상, 위약 대비 DunedinPACE 9% 감소 (Nature Communications, 2026)\n\nHIV 관련 만성염증 환자군 연구라 일반인 적용은 아직 확인되지 않았습니다.\n\n출처는 마지막 장에. 저장해두고 다음 노화 소식과 비교해보세요.",
+  "hashtags": [
+    "#라이프스타일",
+    "#자기관리",
+    "#건강관리",
+    "#다이어트",
+    "#웰빙",
+    "#노화",
+    "#항노화",
+    "#롱제비티",
+    "#건강수명",
+    "#오젬픽",
+    "#위고비",
+    "#세마글루타이드",
+    "#바이오해킹",
+    "#후성유전학",
+    "#에피지네틱클록",
+    "#논문리뷰",
+    "#노화연구",
+    "#임상시험",
+    "#DunedinPACE",
+    "#네이처커뮤니케이션스"
+  ]
+}

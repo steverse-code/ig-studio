@@ -1,0 +1,87 @@
+{
+  "slug": "2026-08-20-deliberate-practice",
+  "pillar": "success",
+  "handle": "@insteverse",
+  "publish_at": "2026-08-20T09:00:00+09:00",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "성공법",
+      "headline": "1만 시간을 채우면\n성공한다는 그 법칙",
+      "subline": "88개 연구를 다시 계산해보니\n숫자가 달랐습니다.",
+      "anchor": "12%"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "핵심 수치",
+      "value": "12%",
+      "label": "연습량 차이가 실력 차이를\n설명하는 비율 (평균)",
+      "note": "Macnamara, Hambrick & Oswald. Psychological Science. 2014 · 88개 연구 메타분석"
+    },
+    {
+      "type": "list",
+      "title": "분야마다\n완전히 달랐다",
+      "items": [
+        { "t": "게임  →  26%", "d": "체스처럼 규칙과 정답이 명확한 영역" },
+        { "t": "음악  →  21%", "d": "정해진 악보를 반복 훈련하는 영역" },
+        { "t": "스포츠  →  18%", "d": "" },
+        { "t": "교육  →  4%", "d": "" },
+        { "t": "전문직  →  1% 미만", "d": "경영·의료처럼 변수가 많은 영역" }
+      ]
+    },
+    {
+      "type": "point",
+      "index": "01",
+      "title": "1만 시간의 법칙,\n어디서 시작됐나",
+      "body": "1993년 에릭슨의 베를린 음대 바이올린 연구 — 최상위 그룹이 20세까지 쌓은 연습시간의 '평균'이 1만 시간이었습니다.\n\n2008년 글래드웰은 이 평균을 '누구나 통하는 공식'으로 바꿔 소개했습니다. 에릭슨 본인은 훗날 이를 '과도한 단순화'라고 직접 정정했습니다."
+    },
+    {
+      "type": "list",
+      "title": "그럼 무엇을\n먼저 봐야 하나",
+      "items": [
+        { "t": "구조가 명확한 일", "d": "정답과 피드백이 뚜렷한 영역 — 연습량이 크게 작동합니다" },
+        { "t": "변수가 많은 일", "d": "상황마다 다른 영역 — 연습 외에 판단력과 타이밍이 함께 작동합니다" },
+        { "t": "내 일이 어디 가까운지", "d": "얼마나 연습할지보다, 이 질문이 먼저입니다" }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "메타분석은 상관관계입니다.\n실력이 뛰어나서 더 연습했는지,\n연습해서 실력이 늘었는지는\n이 데이터만으로 가를 수 없습니다.",
+      "by": "Macnamara 외, 2014 — 저자들이 직접 밝힌 한계"
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "Ericsson KA, Krampe RT, Tesch-Römer C. The Role of Deliberate Practice in the Acquisition of Expert Performance. Psychological Review. 1993;100(3):363-406.",
+        "Macnamara BN, Hambrick DZ, Oswald FL. Deliberate Practice and Performance in Music, Games, Sports, Education, and Professions: A Meta-Analysis. Psychological Science. 2014;25(8):1608-1618.",
+        "Gladwell M. Outliers: The Story of Success. Little, Brown and Company; 2008.",
+        "* 이 계정의 모든 수치는 원문과 함께 공개합니다. 상관관계를 인과로 확대 해석하지 않습니다."
+      ],
+      "cta": "저장해두고\n지금 하는 일에 대입해보세요"
+    }
+  ],
+  "caption": "노력이 실력을 설명하는 비율은 12%였습니다.\n\n1만 시간의 법칙을 낳은 그 연구를, 88개 연구로 다시 계산한 결과입니다.\n(Macnamara et al., Psychological Science, 2014)\n\n분야마다 편차는 큽니다. 게임·음악은 20%대, 전문직은 1% 미만 — 상관관계일 뿐 인과는 아닙니다.\n\n출처는 마지막 장에. 저장해두고 지금 하는 일에 대입해보세요.",
+  "hashtags": [
+    "#자기계발",
+    "#성공",
+    "#커리어",
+    "#자기관리",
+    "#동기부여",
+    "#커리어개발",
+    "#의사결정",
+    "#근거기반",
+    "#심리학",
+    "#직장인",
+    "#자기성장",
+    "#생산성",
+    "#습관형성",
+    "#프로페셔널",
+    "#1만시간의법칙",
+    "#의도적연습",
+    "#메타분석",
+    "#논문리뷰",
+    "#전문성",
+    "#심리과학"
+  ]
+}
