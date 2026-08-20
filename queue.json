@@ -39,7 +39,9 @@
     "media_id": "17903194659543962",
     "published_at": "2026-08-18T18:51:15.504647+09:00",
     "reel_publish_at": "2026-08-19T20:15:00+09:00",
-    "reel_status": "pending"
+    "reel_status": "published",
+    "reel_media_id": "18121927589504596",
+    "reel_published_at": "2026-08-20T15:56:30.629714+09:00"
   },
   {
     "slug": "2026-08-18-ultra-processed-food",
