@@ -27,7 +27,9 @@
     "media_id": "18207392494363110",
     "published_at": "2026-08-18T18:05:54.746889+09:00",
     "reel_publish_at": "2026-08-19T14:15:00+09:00",
-    "reel_status": "pending"
+    "reel_status": "published",
+    "reel_media_id": "18113629897772192",
+    "reel_published_at": "2026-08-20T15:55:16.619814+09:00"
   },
   {
     "slug": "2026-08-18-resale-value",
