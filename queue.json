@@ -49,9 +49,11 @@
     "publish_at": "2026-08-18T19:00:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-20T09:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "published",
     "media_id": "17964191210970121",
-    "published_at": "2026-08-18T19:35:50.067133+09:00"
+    "published_at": "2026-08-18T19:35:50.067133+09:00",
+    "reel_media_id": "18119705611890228",
+    "reel_published_at": "2026-08-20T15:57:40.258990+09:00"
   },
   {
     "slug": "2026-08-18-shoulder-fit",
