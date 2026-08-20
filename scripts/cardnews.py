@@ -55,13 +55,22 @@ class Theme:
 
 
 THEMES = {
-    "longevity": Theme("#F7F5F0", "#14201C", "#6B7A74", "#1F4A3D", "#E4EDE7", dark="#0C1512"),
-    "lifestyle": Theme("#F8F5F1", "#221A14", "#7C6E62", "#9C4A24", "#F2E4DA", dark="#17100B"),
-    "fashion":   Theme("#F5F4F2", "#1A1A1F", "#75757F", "#2B2B33", "#E7E4DC", dark="#101014"),
-    "default":   Theme("#F7F5F0", "#16150F", "#6E6A5F", "#3A4A2F", "#E8EAE1"),
+    "longevity":     Theme("#F7F5F0", "#14201C", "#6B7A74", "#1F4A3D", "#E4EDE7", dark="#0C1512"),
+    "lifestyle":     Theme("#F8F5F1", "#221A14", "#7C6E62", "#9C4A24", "#F2E4DA", dark="#17100B"),
+    "fashion":       Theme("#F5F4F2", "#1A1A1F", "#75757F", "#2B2B33", "#E7E4DC", dark="#101014"),
+    "aging_news":    Theme("#F2F5F5", "#101C1E", "#5E7477", "#12525A", "#DCEAEB", dark="#0A1516"),
+    "ai_news":       Theme("#F4F3F7", "#17151F", "#726E82", "#38316B", "#E4E1F0", dark="#100D1C"),
+    "food":          Theme("#F8F4F0", "#221410", "#7C645A", "#8A2E1E", "#F0DED6", dark="#1C0F0B"),
+    "relationships": Theme("#F8F3F3", "#211417", "#7C6266", "#7A2E42", "#F0DCE1", dark="#1B0F12"),
+    "success":       Theme("#F6F4EE", "#1A1608", "#736C58", "#5C4A16", "#E9E2CE", dark="#141006"),
+    "default":       Theme("#F7F5F0", "#16150F", "#6E6A5F", "#3A4A2F", "#E8EAE1"),
 }
 
-PILLAR_LABEL = {"longevity": "LONGEVITY", "lifestyle": "LIFESTYLE", "fashion": "FASHION"}
+PILLAR_LABEL = {
+    "longevity": "LONGEVITY", "lifestyle": "LIFESTYLE", "fashion": "FASHION",
+    "aging_news": "AGING NEWS", "ai_news": "AI", "food": "FOOD",
+    "relationships": "RELATIONSHIPS", "success": "SUCCESS",
+}
 
 
 # ─────────────────────────────────────────────────────────────
