@@ -61,9 +61,11 @@
     "publish_at": "2026-08-18T19:40:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-20T14:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "published",
     "media_id": "18012774731931326",
-    "published_at": "2026-08-18T20:01:14.628780+09:00"
+    "published_at": "2026-08-18T20:01:14.628780+09:00",
+    "reel_media_id": "18100692998261886",
+    "reel_published_at": "2026-08-20T15:58:52.746998+09:00"
   },
   {
     "slug": "2026-08-18-step-count",
