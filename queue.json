@@ -73,9 +73,11 @@
     "publish_at": "2026-08-18T20:20:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-20T20:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "published",
     "media_id": "18077896982342271",
-    "published_at": "2026-08-18T20:46:21.478988+09:00"
+    "published_at": "2026-08-18T20:46:21.478988+09:00",
+    "reel_media_id": "18173937955438906",
+    "reel_published_at": "2026-08-20T20:40:32.335646+09:00"
   },
   {
     "slug": "2026-08-18-coffee-mortality",
