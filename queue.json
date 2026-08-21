@@ -97,9 +97,11 @@
     "publish_at": "2026-08-18T21:40:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-21T19:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "published",
     "media_id": "17879668809510922",
-    "published_at": "2026-08-18T22:28:41.991465+09:00"
+    "published_at": "2026-08-18T22:28:41.991465+09:00",
+    "reel_media_id": "18097947113343709",
+    "reel_published_at": "2026-08-21T19:17:52.639669+09:00"
   },
   {
     "slug": "2026-08-18-visceral-fat",
