@@ -7,8 +7,12 @@ reel.py — 카드뉴스 슬라이드를 이어붙여 Instagram 릴스(세로 �
 슬라이드를 Ken Burns(천천히 줌) 효과로 순서대로 보여주고
 배경음을 깔아 mp4로 내보낸다.
 
-배경음은 필러(주제)마다 다른 화음·맥박으로 그 자리에서 합성한다 — MUSIC 표 참고.
-외부 음원이나 샘플을 전혀 쓰지 않으므로 저작권 문제가 없다.
+배경음은 두 갈래다.
+
+1. assets/music/tracks.json 에 해당 필러 트랙이 등록돼 있으면 그 음원을 쓴다
+   (Epidemic Sound 등 라이선스 구매한 음원 — 파일은 직접 내려받아 넣어야 한다)
+2. 없으면 필러별 화음·맥박으로 그 자리에서 합성한다 — MUSIC 표 참고.
+   외부 음원을 전혀 쓰지 않으므로 저작권 문제가 없다.
 
 사용:
     python3 scripts/reel.py content/2026-08-17-vo2max.json out/
@@ -21,7 +25,14 @@ import subprocess
 import sys
 import tempfile
 
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MUSIC_DIR = os.path.join(ROOT_DIR, "assets", "music")
+TRACKS_JSON = os.path.join(MUSIC_DIR, "tracks.json")
+
 W, H, FPS = 1080, 1350, 30
+
+# 라이선스 음원 목표 라우드니스 — 인스타그램 사회적 표준에 맞춘 통합 -14 LUFS
+TARGET_LUFS = -14.0
 
 # 슬라이드 타입별 노출 시간(초) — 커버/출처는 조금 더 길게
 DURATION = {
@@ -132,6 +143,59 @@ MUSIC["lifestyle"] = MUSIC["aging_news"]
 MUSIC_DEFAULT = MUSIC["aging_news"]
 
 
+# ─────────────────────────────────────────────────────────────
+# 라이선스 음원 (Epidemic Sound 등)
+#
+# assets/music/tracks.json 에 필러별 트랙을 등록하면 합성음 대신 그 음원을 쓴다.
+# 음원 파일 자체는 **구독자가 직접 내려받아** assets/music/ 에 넣어야 한다 —
+# Epidemic Sound 는 구독 없이 다운로드할 수 없고, 무단 다운로드는 저작권 침해다.
+#
+# 발행 전 반드시 Epidemic Sound 계정에서 인스타그램 채널을 세이프리스팅할 것.
+# 안 하면 라이선스가 있어도 Meta 권리관리에 걸릴 수 있다.
+# ─────────────────────────────────────────────────────────────
+def load_tracks() -> dict:
+    if not os.path.exists(TRACKS_JSON):
+        return {}
+    try:
+        return json.load(open(TRACKS_JSON, encoding="utf-8")).get("pillars", {})
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"  ! tracks.json 을 읽지 못했습니다 ({e}) — 합성음으로 진행합니다")
+        return {}
+
+
+def find_track(pillar: str | None) -> dict | None:
+    """필러에 등록된 라이선스 음원. 파일이 실제로 있을 때만 돌려준다."""
+    entry = load_tracks().get(pillar or "")
+    if not entry or not entry.get("file"):
+        return None
+    path = entry["file"]
+    path = path if os.path.isabs(path) else os.path.join(MUSIC_DIR, path)
+    if not os.path.exists(path):
+        print(f"  ! {pillar}: tracks.json 에 등록됐지만 파일이 없습니다 → {path}")
+        return None
+    return {**entry, "path": path}
+
+
+def build_licensed_bed(duration: float, out_path: str, track: dict):
+    """구매한 음원을 릴스 길이에 맞춰 자르고 라우드니스를 맞춘다."""
+    fade_out = max(0.0, duration - 1.6)
+    start = float(track.get("start", 0))  # 곡에서 쓸 구간의 시작(초)
+    filt = (
+        f"loudnorm=I={TARGET_LUFS}:TP=-1.5:LRA=11,"
+        f"afade=t=in:d=1.2,afade=t=out:st={fade_out:.3f}:d=1.6"
+    )
+    run([
+        "ffmpeg", "-y",
+        "-stream_loop", "-1",          # 곡이 짧으면 이어붙여 길이를 채운다
+        "-ss", f"{start:.3f}", "-i", track["path"],
+        "-af", filt, "-t", f"{duration:.3f}",
+        "-ar", "44100", "-ac", "2", out_path,
+    ])
+    label = track.get("title") or os.path.basename(track["path"])
+    print(f"  ♪ 라이선스 음원 사용: {label}"
+          + (f" — {track['artist']}" if track.get("artist") else ""))
+
+
 def build_music_bed(duration: float, out_path: str, pillar: str | None = None):
     """필러에 맞는 배경음을 그 자리에서 합성한다 — 외부 음원 없음, 저작권 무관."""
     m = MUSIC.get(pillar or "", MUSIC_DEFAULT)
@@ -187,7 +251,12 @@ def build_reel(spec: dict, slides_dir: str, outdir: str) -> str:
         ])
 
         audio_path = os.path.join(tmp, "bed.wav")
-        build_music_bed(total, audio_path, spec.get("pillar"))
+        pillar = spec.get("pillar")
+        track = find_track(pillar)
+        if track:
+            build_licensed_bed(total, audio_path, track)
+        else:
+            build_music_bed(total, audio_path, pillar)
 
         out_path = os.path.join(outdir, f"{spec['slug']}_reel.mp4")
         run([

@@ -2,3 +2,8 @@ __pycache__/
 *.pyc
 .env
 out/_contact.jpg
+
+# 라이선스 음원은 재배포 금지 — tracks.json 과 README 만 커밋한다
+assets/music/*
+!assets/music/tracks.json
+!assets/music/README.md
