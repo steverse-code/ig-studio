@@ -109,9 +109,11 @@
     "publish_at": "2026-08-18T22:20:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-22T10:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "published",
     "media_id": "18115064327291198",
-    "published_at": "2026-08-18T22:58:29.534438+09:00"
+    "published_at": "2026-08-18T22:58:29.534438+09:00",
+    "reel_permalink": "https://www.instagram.com/reel/DcU14_rHPyM/",
+    "reel_published_at": "2026-08-22T11:30:03+09:00"
   },
   {
     "slug": "2026-08-18-alcohol-limits",
