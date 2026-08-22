@@ -153,6 +153,26 @@ def publish(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = False
 
 
 # ─────────────────────────────────────────────────────────────
+# 릴스 오디오 페이지에 표시될 이름 — 필러별로 한 줄
+AUDIO_NAME = {
+    "longevity": "롱제비티 — 근거로 뒷받침되는 선택지",
+    "aging_news": "노화·의학 뉴스 — 근거로 뒷받침되는 선택지",
+    "ai_news": "AI 소식 — 근거로 뒷받침되는 선택지",
+    "food": "한국 맛집 — 근거로 뒷받침되는 선택지",
+    "success": "성공하는 법 — 근거로 뒷받침되는 선택지",
+    "fashion": "패션 트렌드 — 근거로 뒷받침되는 선택지",
+    "relationships": "연애심리 — 근거로 뒷받침되는 선택지",
+}
+# 구 lifestyle 필러 — reel.py 의 배경음 매핑과 맞춘다
+AUDIO_NAME["lifestyle"] = AUDIO_NAME["aging_news"]
+
+
+def reel_audio_name(spec: dict) -> str:
+    handle = spec.get("handle", "@your_ground_zero").lstrip("@")
+    label = AUDIO_NAME.get(spec.get("pillar", ""), "근거로 뒷받침되는 선택지")
+    return f"{label} · {handle}"
+
+
 def publish_reel(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = False) -> str | None:
     """카드뉴스 슬라이드로 만든 릴스(mp4)를 발행한다."""
     caption = build_caption(spec)
@@ -167,11 +187,16 @@ def publish_reel(spec: dict, ig_id: str, token: str, base_url: str, dry: bool = 
         print("   ", url)
         return None
 
-    container = post(f"/{ig_id}/media",
-                     media_type="REELS",
-                     video_url=url,
-                     caption=caption,
-                     access_token=token)
+    # 배경음은 reel.py 가 필러에 맞춰 직접 합성한 오리지널 오디오다.
+    # audio_name 은 오리지널 오디오에만 붙일 수 있고 한 번 정하면 못 바꾼다.
+    # 이름 붙이기는 부가 기능이므로, 거부당하면 이름 없이 그대로 발행한다 —
+    # 무인 실행에서 이것 때문에 발행 자체가 실패하면 안 된다.
+    fields = dict(media_type="REELS", video_url=url, caption=caption, access_token=token)
+    try:
+        container = post(f"/{ig_id}/media", audio_name=reel_audio_name(spec), **fields)
+    except RuntimeError as e:
+        print(f"  audio_name 거부됨 — 이름 없이 발행합니다: {str(e).splitlines()[0]}")
+        container = post(f"/{ig_id}/media", **fields)
     print(f"  릴스 컨테이너 {container['id']} — 영상 처리 대기 중")
     wait_ready(container["id"], token, tries=60, delay=10)
 
