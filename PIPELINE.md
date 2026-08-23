@@ -1,8 +1,17 @@
 # 일일 자동 파이프라인 (클라우드 실행 기준)
 
-이 문서는 **클라우드 스케줄 에이전트가 그대로 따라 실행하는 절차서**입니다.
-로컬 Mac의 `~/.claude/scheduled-tasks/igstudio-daily-{am,pm}/SKILL.md` 를 대체합니다.
+이 문서는 **`.github/workflows/daily-content.yml` 이 실행하는 에이전트가
+그대로 따라 하는 절차서**입니다. 로컬 Mac 의
+`~/.claude/scheduled-tasks/igstudio-daily-{am,pm}/SKILL.md` 를 대체합니다.
 에이전트는 아무 맥락 없이 시작하므로, 이 문서만 읽고도 끝까지 갈 수 있어야 합니다.
+
+전체 그림:
+
+```
+daily-content.yml  09:00 / 15:00 KST  →  리서치·집필·렌더링·커밋 (이 문서)
+publish.yml        30분마다            →  큐에서 차례 된 글 1건 발행
+refresh-token.yml                      →  인스타그램 토큰 갱신
+```
 
 전제:
 - 작업 디렉터리 = 이 리포지토리의 체크아웃 (경로를 가정하지 말 것. `git rev-parse --show-toplevel` 로 확인)
@@ -85,8 +94,13 @@ pip install --quiet pillow      # 없을 때만
 python3 scripts/cardnews.py content/<slug>.json out
 ```
 
-pillow 설치가 안 되면 렌더링은 건너뛰어도 된다 — 푸시하면 `render.yml` 이
-클라우드에서 이미지를 만들어 커밋한다. 다만 **가능하면 직접 렌더링해서 눈으로 확인**하는 쪽이 낫다.
+**렌더링 결과 이미지(`out/<slug>/`)는 반드시 직접 커밋해야 한다.**
+`render.yml` 은 `content/**.json` 푸시에 반응하지만, GitHub Actions 안에서
+`GITHUB_TOKEN` 으로 푸시하면 워크플로 재귀 방지 때문에 트리거되지 않는다.
+즉 `daily-content.yml` 실행 중에는 render.yml 이 백스톱이 되어주지 않는다.
+이미지가 없으면 발행 단계에서 인스타그램에 넘길 URL이 없다.
+
+(사람이 로컬에서 직접 푸시할 때는 render.yml 이 정상적으로 돈다.)
 
 ## 5. 큐 등록과 푸시
 
@@ -111,7 +125,7 @@ git pull --rebase && git push
 `publish_at` 이 지난 가장 오래된 1건을 발행하고, 큐를 `published` 로 갱신해 커밋한다.
 
 즉 §5 의 푸시가 끝나면 할 일은 끝이다. 최대 30분 안에 자동 발행된다.
-이미지도 `render.yml` 이 푸시 직후 렌더링하므로 크론이 도는 시점엔 준비돼 있다.
+단 §4 대로 **이미지까지 함께 커밋했을 때만** 그렇다.
 
 여유가 있으면 결과를 확인해두면 좋다 (`gh` 인증이 없으면 그냥 건너뛴다):
 

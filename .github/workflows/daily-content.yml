@@ -1,0 +1,97 @@
+name: Daily content pipeline
+
+# 하루 2회, 클라우드에서 콘텐츠를 리서치·집필·렌더링해서 커밋한다.
+# 발행 자체는 publish.yml 이 30분마다 큐를 훑어서 처리한다 (PIPELINE.md §6).
+#
+# 이 워크플로 덕분에 로컬 Mac 이 꺼져 있어도 파이프라인 전체가 돈다.
+#   daily-content.yml (작성·렌더·커밋)  →  publish.yml (발행)
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 09:00 KST — 오전 슬롯
+    - cron: "0 6 * * *"   # 15:00 KST — 오후 슬롯
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "수동 실행할 슬롯"
+        type: choice
+        options: [am, pm]
+        default: am
+
+# 오전/오후 슬롯이 겹쳐 돌면 같은 날 같은 주제를 두 번 쓸 수 있다.
+concurrency:
+  group: daily-content
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      # 에이전트가 직접 렌더링해서 커밋해야 한다.
+      # GITHUB_TOKEN 으로 push 하면 render.yml 이 트리거되지 않기 때문에
+      # (GitHub 의 워크플로 재귀 방지) 이미지를 여기서 만들어 함께 커밋한다.
+      - name: pillow 설치
+        run: pip install --quiet pillow
+
+      - name: 커밋 아이덴티티
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: 슬롯 결정
+        id: slot
+        run: |
+          case "${{ github.event.schedule }}" in
+            "0 0 * * *") SLOT=am ;;
+            "0 6 * * *") SLOT=pm ;;
+            *)           SLOT="${{ inputs.slot }}" ;;
+          esac
+          [ -z "$SLOT" ] && SLOT=am
+          echo "slot=$SLOT" >> "$GITHUB_OUTPUT"
+          echo "오늘 슬롯: $SLOT"
+
+      - name: 콘텐츠 작성
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --max-turns 60
+            --model claude-opus-5
+            --allowedTools Bash,Read,Write,Edit,Glob,Grep,WebSearch,WebFetch
+          prompt: |
+            너는 인스타그램 계정 @your_ground_zero 의 일일 카드뉴스 파이프라인을
+            자동으로 실행하고 있다. 이 저장소의 체크아웃 안에서 작업한다.
+            사람이 검토하지 않는 완전 자동 실행이므로 검증 규칙을 예외 없이 지켜라.
+
+            오늘 슬롯: ${{ steps.slot.outputs.slot }}   (am = 오전, pm = 오후)
+
+            가장 먼저 저장소 루트의 PIPELINE.md 를 전문으로 읽고, 거기 적힌 절차를
+            §0 부터 §8 까지 순서대로 그대로 수행해라. PIPELINE.md 가 이 실행의
+            유일한 기준이다. 이 프롬프트와 어긋나면 PIPELINE.md 를 따른다.
+
+            이 실행 환경에 대해 알아둘 것:
+            - python3 와 pillow 가 이미 설치돼 있으므로 scripts/cardnews.py 로
+              직접 렌더링할 수 있다. 반드시 직접 렌더링해서 7장이 오류 없이 나오는지
+              확인하고, 생성된 out/<slug>/ 이미지를 콘텐츠 JSON 과 함께 커밋해라.
+              (이 실행의 push 는 render.yml 을 트리거하지 않으므로, 여기서 이미지를
+              만들어 커밋하지 않으면 발행할 이미지가 없다.)
+            - git 커밋 아이덴티티는 이미 설정돼 있다. `git push` 로 main 에 바로 푸시한다.
+              푸시가 실패하면 `git pull --rebase` 후 재시도하고, 그래도 안 되면
+              왜 실패했는지 명확히 보고하고 멈춰라.
+            - 인스타그램에 직접 발행하지 마라. `gh workflow run` 을 실행하지 마라.
+              publish.yml 이 30분마다 큐를 훑어 발행한다. 큐에 넣고 푸시하면 끝이다.
+            - 시계는 UTC 다. 날짜와 요일은 반드시 `TZ=Asia/Seoul date` 로 구해라.
+
+            마지막에 선택한 필러와 주제, 사용한 출처와 핵심 사실, 렌더링 결과,
+            커밋·푸시 여부를 간단히 보고해라.
