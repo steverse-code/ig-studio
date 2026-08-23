@@ -121,9 +121,10 @@
     "publish_at": "2026-08-18T23:00:00+09:00",
     "status": "published",
     "reel_publish_at": "2026-08-22T19:15:00+09:00",
-    "reel_status": "pending",
+    "reel_status": "held",
     "media_id": "17884179555613913",
-    "published_at": "2026-08-18T23:23:00.061268+09:00"
+    "published_at": "2026-08-18T23:23:00.061268+09:00",
+    "reel_hold_note": "2026-08-22 19:15 예정이었으나 발행되지 않은 채 남아 있던 항목. 30분 드레인 크론 도입 시 의도치 않게 발행되는 것을 막기 위해 보류. 발행하려면 held → pending 으로 되돌릴 것."
   },
   {
     "slug": "2026-08-21-fill-power",
