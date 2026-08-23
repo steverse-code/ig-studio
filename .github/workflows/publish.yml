@@ -65,11 +65,26 @@ jobs:
           [ "${{ inputs.reel }}" = "true" ] && ARGS="$ARGS --reel"
           python3 scripts/publish.py $ARGS
 
+      # 발행 결과를 큐에 반드시 반영한다.
+      # 이 push 가 실패하면 remote 큐에 pending 이 남아, 다음 크론이 같은 글을
+      # 또 발행한다(2026-08-22 bib-gourmand 중복 발행이 이 경로였다).
+      # 그래서 rebase 후 재시도하고, 그래도 안 되면 잡을 실패시켜 눈에 띄게 한다.
       - name: Update queue
         if: ${{ inputs.dry_run != true }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add queue.json
-          git diff --staged --quiet || git commit -m "publish: mark posted"
-          git push
+          git diff --staged --quiet && exit 0
+          git commit -m "publish: mark posted"
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "큐 반영 완료 (시도 $i)"
+              exit 0
+            fi
+            echo "push 거부됨 — rebase 후 재시도 ($i/5)"
+            git pull --rebase --autostash || exit 1
+            sleep $((i * 3))
+          done
+          echo "::error::큐 반영 실패 — remote 에 pending 이 남아 중복 발행 위험이 있습니다"
+          exit 1
