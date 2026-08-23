@@ -69,7 +69,10 @@ jobs:
       - name: 콘텐츠 작성
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Console API 키(크레딧 과금) 대신 Claude 구독 토큰을 쓴다.
+          # 발급: 로컬에서 `claude setup-token` → gh secret set CLAUDE_CODE_OAUTH_TOKEN
+          # 토큰은 만료되므로, 어느 날 401 로 실패하면 재발급해서 시크릿을 갱신할 것.
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           # 기본 GITHUB_TOKEN 을 넘기면 Claude Code GitHub App 설치 없이 동작한다.
           # (앱을 설치하지 않으면 OIDC → 앱 토큰 교환이 401 로 실패한다)
           github_token: ${{ secrets.GITHUB_TOKEN }}
