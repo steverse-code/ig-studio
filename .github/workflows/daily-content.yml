@@ -16,6 +16,10 @@ on:
         type: choice
         options: [am, pm]
         default: am
+      dry_run:
+        description: "커밋·푸시 없이 환경과 절차만 점검 (첫 설정 검증용)"
+        type: boolean
+        default: false
 
 # 오전/오후 슬롯이 겹쳐 돌면 같은 날 같은 주제를 두 번 쓸 수 있다.
 concurrency:
@@ -92,6 +96,12 @@ jobs:
             - 인스타그램에 직접 발행하지 마라. `gh workflow run` 을 실행하지 마라.
               publish.yml 이 30분마다 큐를 훑어 발행한다. 큐에 넣고 푸시하면 끝이다.
             - 시계는 UTC 다. 날짜와 요일은 반드시 `TZ=Asia/Seoul date` 로 구해라.
+
+            DRY RUN 여부: ${{ inputs.dry_run }}
+            이 값이 true 이면 **커밋과 푸시를 하지 마라.** queue.json 도 건드리지 마라.
+            PIPELINE.md §0~§4 까지만(필러 결정, 기준 읽기, 리서치, 집필, 렌더링) 수행하고,
+            무엇을 쓰려 했는지와 렌더링이 성공했는지, WebSearch/WebFetch 가 동작했는지를
+            보고한 뒤 멈춰라. 이건 클라우드 환경이 제대로 동작하는지 확인하는 점검 실행이다.
 
             마지막에 선택한 필러와 주제, 사용한 출처와 핵심 사실, 렌더링 결과,
             커밋·푸시 여부를 간단히 보고해라.
