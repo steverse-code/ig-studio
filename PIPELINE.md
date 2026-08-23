@@ -15,7 +15,9 @@ refresh-token.yml                      →  인스타그램 토큰 갱신
 
 전제:
 - 작업 디렉터리 = 이 리포지토리의 체크아웃 (경로를 가정하지 말 것. `git rev-parse --show-toplevel` 로 확인)
-- 실행 환경 시계는 **UTC**. 날짜·요일은 반드시 `TZ=Asia/Seoul date` 로 구할 것
+- 워크플로가 `TZ=Asia/Seoul` 을 걸어두므로 러너의 `date` 는 KST 로 나온다. 다만
+  환경이 바뀔 수 있으니 **날짜·요일은 항상 `TZ=Asia/Seoul date` 로 명시해서 구할 것**
+  (러너 기본값은 UTC이고, 그대로 쓰면 자정~오전 9시 사이에 날짜가 하루 어긋난다)
 - 인스타그램 실제 발행은 **이 에이전트가 하지 않는다.** GitHub Actions 의
   `publish.yml` 이 30분마다 큐를 훑어서 발행한다 (§6 참고)
 

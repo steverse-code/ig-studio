@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+# 봇 커밋 시각을 KST 로 (러너 기본값은 UTC)
+env:
+  TZ: Asia/Seoul
+
 jobs:
   render:
     runs-on: ubuntu-latest

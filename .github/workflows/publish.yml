@@ -31,6 +31,11 @@ on:
 permissions:
   contents: write
 
+# 러너는 UTC 로 동작한다. 봇 커밋의 author/committer 시각이 UTC 로 찍히면
+# 사용자가 KST 로 남긴 커밋과 섞여 git log 순서가 뒤죽박죽으로 보인다.
+env:
+  TZ: Asia/Seoul
+
 jobs:
   publish:
     runs-on: ubuntu-latest

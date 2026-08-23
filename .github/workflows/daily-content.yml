@@ -5,10 +5,12 @@ name: Daily content pipeline
 #
 # 이 워크플로 덕분에 로컬 Mac 이 꺼져 있어도 파이프라인 전체가 돈다.
 #   daily-content.yml (작성·렌더·커밋)  →  publish.yml (발행)
+# cron 은 GitHub 이 평가하므로 항상 UTC 다. 아래 env 의 TZ 는 러너 안의 시계에만
+# 적용되고 크론 시각에는 영향을 주지 않는다 — 두 개를 헷갈리지 말 것.
 on:
   schedule:
-    - cron: "0 0 * * *"   # 09:00 KST — 오전 슬롯
-    - cron: "0 6 * * *"   # 15:00 KST — 오후 슬롯
+    - cron: "0 0 * * *"   # 00:00 UTC = 09:00 KST — 오전 슬롯
+    - cron: "0 6 * * *"   # 06:00 UTC = 15:00 KST — 오후 슬롯
   workflow_dispatch:
     inputs:
       slot:
@@ -29,6 +31,11 @@ concurrency:
 permissions:
   contents: write
   id-token: write   # claude-code-action 이 OIDC 토큰을 교환하는 데 필요하다
+
+# 커밋 시각을 KST 로 맞춘다. 덤으로 에이전트의 `date` 도 KST 가 되어
+# 오늘 날짜·요일(= 필러 결정)을 잘못 잡을 여지가 줄어든다.
+env:
+  TZ: Asia/Seoul
 
 jobs:
   write:
