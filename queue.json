@@ -174,5 +174,11 @@
     "status": "published",
     "media_id": "18613897231053915",
     "published_at": "2026-08-24T10:07:34.387502+09:00"
+  },
+  {
+    "slug": "2026-08-24-made-in-italy",
+    "pillar": "fashion",
+    "publish_at": "2026-08-24T15:47:41+09:00",
+    "status": "pending"
   }
 ]
