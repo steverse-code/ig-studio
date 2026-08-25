@@ -190,5 +190,11 @@
     "status": "published",
     "media_id": "18125222842881309",
     "published_at": "2026-08-25T13:35:41.207373+09:00"
+  },
+  {
+    "slug": "2026-08-25-ai-act-article50",
+    "pillar": "ai_news",
+    "publish_at": "2026-08-25T15:37:14+09:00",
+    "status": "pending"
   }
 ]
