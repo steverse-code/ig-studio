@@ -180,5 +180,11 @@
     "pillar": "fashion",
     "publish_at": "2026-08-24T15:47:41+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-08-25-ptau217",
+    "pillar": "aging_news",
+    "publish_at": "2026-08-25T09:51:48+09:00",
+    "status": "pending"
   }
 ]
