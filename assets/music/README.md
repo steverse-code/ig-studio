@@ -12,7 +12,24 @@
 
 ---
 
-## Epidemic Sound 음원을 쓰려면
+## 지금 등록된 음원 — Incompetech (Kevin MacLeod)
+
+`tracks.json` 에 등록된 트랙은 [Incompetech](https://incompetech.com)
+(Kevin MacLeod) 의 곡으로, **CC BY 3.0** — 출처 표기만 하면 상업적 이용 포함
+자유롭게 쓸 수 있습니다. Epidemic Sound 와 달리 구독이나 세이프리스팅이
+필요 없습니다. 다운로드는 Internet Archive 미러
+(`archive.org/download/Incompetech/mp3-royaltyfree/<곡명>.mp3`)를 통해 받았습니다.
+
+**캡션에 크레딧을 표기하세요**: `Music: <곡명> by Kevin MacLeod (incompetech.com)`
+CC BY 라이선스의 표기 조건입니다.
+
+같은 방식으로 다른 필러/카테고리에 곡을 추가하려면 `incompetech.com` 에서
+장르·무드로 검색해 곡명을 찾은 뒤, 위 archive.org URL 패턴으로 받아서
+`tracks.json` 에 등록하면 됩니다.
+
+---
+
+## Epidemic Sound 음원을 쓰려면 (선택 — 위 무료 음원 대신 쓰고 싶을 때)
 
 ### 1. 구독이 있어야 합니다
 무료 다운로드가 없습니다. 미리듣기만 무료이고, 파일을 받으려면 활성 구독이나

@@ -1,25 +1,67 @@
 {
   "_note": [
     "필러별 라이선스 배경음 등록표. 여기에 등록된 필러는 합성음 대신 이 음원을 씁니다.",
-    "음원 파일은 구독 계정으로 직접 내려받아 assets/music/ 에 넣으세요 —",
-    "이 저장소는 음원 파일 자체를 포함하지 않습니다(재배포는 라이선스 위반).",
-    "발행 전 Epidemic Sound 계정에서 인스타그램 채널 세이프리스팅을 반드시 켜세요.",
+    "출처: Incompetech (Kevin MacLeod) — CC BY 3.0, 크레딧 표기 조건으로 상업적 이용 포함 자유 사용 가능.",
+    "음원 파일 자체는 이 저장소에 커밋하지 않습니다 (assets/music/*.mp3 는 .gitignore 대상).",
+    "릴스는 현재 로컬에서 수동으로 만듭니다 (daily-content.yml 자동 파이프라인은 카드뉴스만 생성) —",
+    "그래서 파일이 클라우드에 없어도 문제없습니다. 릴스 발행 워크플로가 자동화되면 이 부분 재검토 필요.",
     "",
     "각 항목 필드:",
-    "  file   : assets/music/ 기준 상대 경로 (필수)",
-    "  title  : 곡 제목 — 로그 표시용",
-    "  artist : 아티스트",
-    "  url    : 출처 트랙 페이지 (나중에 어떤 곡이었는지 되찾기 위해)",
-    "  start  : 곡에서 쓸 구간의 시작 초. 인트로가 길면 20~30 정도로 건너뛰세요",
-    "",
-    "예시 (파일을 넣은 뒤 아래 형식으로 pillars 에 추가):",
-    "  \"ai_news\": {",
-    "    \"file\": \"ai_news.mp3\",",
-    "    \"title\": \"곡 제목\",",
-    "    \"artist\": \"아티스트\",",
-    "    \"url\": \"https://www.epidemicsound.com/track/.../\",",
-    "    \"start\": 24",
-    "  }"
+    "  file   : assets/music/ 기준 상대 경로",
+    "  title  : 곡 제목",
+    "  artist : 아티스트 — 캡션에 크레딧 표기용",
+    "  url    : 출처 페이지",
+    "  start  : 곡에서 쓸 구간의 시작 초"
   ],
-  "pillars": {}
+  "pillars": {
+    "longevity": {
+      "file": "longevity.mp3",
+      "title": "At Rest",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=at+rest",
+      "start": 0
+    },
+    "aging_news": {
+      "file": "aging_news.mp3",
+      "title": "Air Prelude",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=air+prelude",
+      "start": 0
+    },
+    "fashion": {
+      "file": "fashion.mp3",
+      "title": "Airport Lounge",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=airport+lounge",
+      "start": 10
+    },
+    "ai_news": {
+      "file": "ai_news.mp3",
+      "title": "Airship Serenity",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=airship+serenity",
+      "start": 0
+    },
+    "food": {
+      "file": "food.mp3",
+      "title": "Autumn Day",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=autumn+day",
+      "start": 0
+    },
+    "relationships": {
+      "file": "relationships.mp3",
+      "title": "Avec Soin",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=avec+soin",
+      "start": 0
+    },
+    "success": {
+      "file": "success.mp3",
+      "title": "Bathed in the Light",
+      "artist": "Kevin MacLeod (incompetech.com)",
+      "url": "https://incompetech.com/music/royalty-free/index.html?keywords=bathed+in+the+light",
+      "start": 0
+    }
+  }
 }
