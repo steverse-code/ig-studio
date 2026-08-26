@@ -206,5 +206,11 @@
     "status": "published",
     "media_id": "18095517119542582",
     "published_at": "2026-08-26T10:08:26.711053+09:00"
+  },
+  {
+    "slug": "2026-08-26-capitalization",
+    "pillar": "relationships",
+    "publish_at": "2026-08-26T15:38:39+09:00",
+    "status": "pending"
   }
 ]
