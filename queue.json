@@ -228,5 +228,11 @@
     "pillar": "longevity",
     "publish_at": "2026-08-27T17:55:46+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-08-28-statin-after-75",
+    "pillar": "aging_news",
+    "publish_at": "2026-08-28T02:15:05+09:00",
+    "status": "pending"
   }
 ]
