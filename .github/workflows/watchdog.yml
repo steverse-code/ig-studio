@@ -6,18 +6,29 @@ name: Daily content watchdog
 # 이력 자체가 없었다). 이 워치독은 각 슬롯 목표 시각에서 50분 지난 시점에
 # "오늘 이 슬롯이 이미 돌았는가"를 확인하고, 안 돌았으면 대신 workflow_dispatch
 # 로 실행시킨다. 50분은 관측된 정상 지연 폭(20~50분대)을 넘는 값으로 잡았다.
+#
+# 두 번째 실패 모드(stuck-publish 잡): 콘텐츠는 제때 만들어졌는데 publish.yml 의
+# */30 크론이 드롭돼서 큐에 pending 만 쌓이는 경우. 2026-08-28 오후 그라운드제로가
+# 이 케이스였다 — 14:05 KST 이후 7시간 동안 publish 실행 이력이 없어 pm 카드가
+# 3시간 50분째 pending 이었다. 위의 슬롯 점검은 daily-content.yml 만 보기 때문에
+# 이걸 잡지 못한다. 그래서 매시 큐를 직접 읽어, 예정 시각이 지난 pending 이
+# 90분 넘게 남아 있으면 publish.yml 을 대신 실행시킨다. 90분은 정상 경로가
+# "publish_at + 최대 30분"(publish.yml 주석)인 것의 두 배 남짓으로 잡았다.
 on:
   schedule:
     - cron: "50 0 * * *"   # 00:50 UTC = 09:50 KST — 오전 슬롯 점검
     - cron: "50 6 * * *"   # 06:50 UTC = 15:50 KST — 오후 슬롯 점검
+    - cron: "15 * * * *"   # 매시 15분 — 발행 적체 점검
   workflow_dispatch:
 
 permissions:
-  actions: write   # 안 돌았을 때 daily-content.yml 을 대신 실행시키는 데 필요
+  actions: write   # 안 돌았을 때 daily-content.yml / publish.yml 을 대신 실행시키는 데 필요
   contents: read
 
 jobs:
   check:
+    # 슬롯 점검은 두 슬롯 크론에서만. 매시 크론과 수동 실행에서는 돌지 않는다.
+    if: github.event.schedule == '50 0 * * *' || github.event.schedule == '50 6 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: 슬롯 결정
@@ -58,3 +69,78 @@ jobs:
           echo "한 번도 실행되지 않았다. 워치독이 대신 실행시킨다."
           gh workflow run daily-content.yml --repo "${{ github.repository }}" \
             -f slot="${{ steps.slot.outputs.slot }}" -f dry_run=false
+
+  stuck-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: 적체된 pending 확인
+        id: stuck
+        env:
+          STALL_MINUTES: "90"
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from datetime import datetime, timezone, timedelta
+
+          KST = timezone(timedelta(hours=9))
+          now = datetime.now(KST)
+          limit = timedelta(minutes=int(os.environ["STALL_MINUTES"]))
+
+          # 판정 조건은 publish.py 의 due_candidates 와 같게 유지한다
+          # (카드뉴스 status/publish_at, 릴스 reel_status/reel_publish_at).
+          stuck = []
+          for e in json.load(open("queue.json")):
+              for status_key, at_key in (("status", "publish_at"),
+                                         ("reel_status", "reel_publish_at")):
+                  if e.get(status_key) != "pending" or not e.get(at_key):
+                      continue
+                  at = datetime.fromisoformat(e[at_key])
+                  overdue = now - at
+                  if overdue > limit:
+                      stuck.append(f"{e.get('slug')} [{at_key}={e[at_key]}] "
+                                   f"{int(overdue.total_seconds() // 60)}분 경과")
+
+          for s in stuck:
+              print(f"적체: {s}")
+          print(f"적체 {len(stuck)}건 (기준 {os.environ['STALL_MINUTES']}분)")
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"count={len(stuck)}\n")
+          PY
+
+      # 크론이 드롭된 것(대신 실행하면 해결)과 publish.yml 이 돌았는데도 pending 이
+      # 남은 것(토큰 만료 등 — 대신 실행해도 똑같이 실패한다)을 구분한다. 후자에서
+      # 매시 재실행하면 실패 런만 쌓이므로, 최근에 발행이 돌았으면 손대지 않고
+      # 에러로 남겨 눈에 띄게 한다.
+      - name: 최근 발행 실행 이력 확인
+        id: recent
+        if: steps.stuck.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SINCE="$(date -u -d '45 minutes ago' +%Y-%m-%dT%H:%M:%SZ)"
+          COUNT=$(gh run list --repo "${{ github.repository }}" \
+            --workflow=publish.yml \
+            --json createdAt \
+            --jq "[.[] | select(.createdAt >= \"$SINCE\")] | length")
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          echo "$SINCE 이후 publish.yml 실행 이력: ${COUNT}건"
+
+      - name: 발행이 드롭됐으면 대신 실행
+        if: steps.stuck.outputs.count != '0' && steps.recent.outputs.count == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "예정 시각이 90분 넘게 지난 pending 이 있는데 publish.yml 이 최근 45분간"
+          echo "한 번도 돌지 않았다 — 크론이 드롭된 것으로 보고 대신 실행시킨다."
+          gh workflow run publish.yml --repo "${{ github.repository }}"
+
+      - name: 발행은 돌았는데 pending 이 남은 경우
+        if: steps.stuck.outputs.count != '0' && steps.recent.outputs.count != '0'
+        run: |
+          echo "::error::publish.yml 은 최근에 돌았는데도 pending 이 90분 넘게 남아 있습니다."
+          echo "::error::크론 드롭이 아니라 발행 자체가 실패하는 상황입니다 (토큰 만료 등)."
+          echo "::error::재실행해도 같은 실패가 반복되므로 워치독은 손대지 않습니다 — 확인이 필요합니다."
+          exit 1
