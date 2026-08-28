@@ -238,5 +238,11 @@
     "status": "published",
     "media_id": "18112884694997854",
     "published_at": "2026-08-28T08:50:10.202511+09:00"
+  },
+  {
+    "slug": "2026-08-28-price-vs-value",
+    "pillar": "fashion",
+    "publish_at": "2026-08-28T17:19:23+09:00",
+    "status": "pending"
   }
 ]
