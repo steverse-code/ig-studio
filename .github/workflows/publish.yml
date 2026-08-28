@@ -1,6 +1,11 @@
 name: Publish to Instagram
 
-# 30분마다 큐를 훑어서, publish_at 이 지난 pending 1건을 발행한다.
+# 30분마다 큐를 훑어서, publish_at 이 지난 pending 을 전부 발행한다
+# (한 실행당 상한은 publish.py 의 DEFAULT_MAX_PER_RUN).
+#
+# 한 번에 1건만 발행하던 시절엔, 깃허브 스케줄러가 크론을 떨구면(하루 2~3회까지
+# 줄어든 적이 있다) 큐가 쌓이기만 하고 빠지질 않았다 — 2026-08-28 에 3건이 최대
+# 14시간 밀려 수동 개입으로 빼냈다. 그래서 밀린 건 실행 한 번으로 따라잡는다.
 #
 # 이 리포지토리는 로컬 Mac 없이 클라우드만으로 돌아간다 (PIPELINE.md 참고):
 #   클라우드 스케줄 에이전트가 콘텐츠를 써서 push
@@ -27,6 +32,9 @@ on:
         description: "캐러셀 대신 릴스(mp4)로 발행 (slug 필수)"
         type: boolean
         default: false
+      max:
+        description: "이번 실행 발행 상한 (비우면 기본값, 0이면 무제한)"
+        required: false
 
 permissions:
   contents: write
@@ -56,14 +64,19 @@ jobs:
           [ -n "${{ inputs.slug }}" ] && ARGS="$ARGS --slug ${{ inputs.slug }}"
           [ "${{ inputs.dry_run }}" = "true" ] && ARGS="$ARGS --dry-run"
           [ "${{ inputs.reel }}" = "true" ] && ARGS="$ARGS --reel"
+          [ -n "${{ inputs.max }}" ] && ARGS="$ARGS --max ${{ inputs.max }}"
           python3 scripts/publish.py $ARGS
 
       # 발행 결과를 큐에 반드시 반영한다.
       # 이 push 가 실패하면 remote 큐에 pending 이 남아, 다음 크론이 같은 글을
       # 또 발행한다(2026-08-22 bib-gourmand 중복 발행이 이 경로였다).
       # 그래서 rebase 후 재시도하고, 그래도 안 되면 잡을 실패시켜 눈에 띄게 한다.
+      #
+      # always() 인 이유: 여러 건을 도는 중 뒤쪽 1건이 실패하면 발행 스텝이 죽는데,
+      # 그때 이 스텝을 건너뛰면 앞서 실제로 나간 글들이 remote 에 pending 으로 남아
+      # 다음 크론이 통째로 재발행한다. 실패했을 때야말로 큐를 커밋해야 한다.
       - name: Update queue
-        if: ${{ inputs.dry_run != true }}
+        if: ${{ always() && inputs.dry_run != true }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

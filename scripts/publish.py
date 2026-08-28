@@ -12,7 +12,8 @@ Instagram API with Instagram Login (Facebook 페이지 불필요)
                     예) https://raw.githubusercontent.com/<user>/<repo>/main
 
 사용
-  python3 scripts/publish.py              # 큐에서 발행할 차례인 글 1건 발행
+  python3 scripts/publish.py              # 큐에서 발행할 차례인 글을 전부 발행
+  python3 scripts/publish.py --max 1      # 이번 실행에서 1건만 발행
   python3 scripts/publish.py --dry-run    # 실제 발행 없이 점검만
   python3 scripts/publish.py --slug 2026-08-17-vo2max   # 특정 글 강제 발행
   python3 scripts/publish.py --slug 2026-08-17-vo2max --reel   # 같은 글을 릴스(mp4)로 발행
@@ -37,6 +38,14 @@ MAX_CAPTION = 2200
 MAX_HASHTAGS = 30
 MAX_SLIDES = 10          # 인스타 캐러셀 상한
 MIN_SLIDES = 2
+
+# 한 번의 실행에서 발행할 최대 건수.
+# 정상 운영은 하루 2건이므로, 이 수를 넘게 밀렸다는 건 파이프라인이 어딘가
+# 고장났다는 뜻이다. 그런 상태에서 큐를 통째로 쏟아내면 계정이 스팸으로 보인다.
+# 남은 건은 다음 크론(30분 뒤)이 이어서 발행하므로 결국 다 빠진다.
+DEFAULT_MAX_PER_RUN = 5
+# 연속 발행 사이 간격(초). 캐러셀 1건 자체가 수 분 걸리므로 크게 잡을 필요는 없다.
+DEFAULT_DELAY = 30
 
 
 # ─────────────────────────────────────────────────────────────
@@ -219,21 +228,52 @@ def save_queue(q: list[dict]) -> None:
     json.dump(q, open(QUEUE, "w", encoding="utf-8"), ensure_ascii=False, indent=2)
 
 
-def pick_due(q: list[dict], now: datetime) -> dict | None:
-    """예정 시각이 지난 pending 중 가장 오래된 1건 (캐러셀)."""
-    due = [e for e in q
-           if e.get("status") == "pending"
-           and datetime.fromisoformat(e["publish_at"]) <= now]
-    return min(due, key=lambda e: e["publish_at"]) if due else None
+def due_candidates(q: list[dict], now: datetime) -> list[tuple[str, dict, str]]:
+    """예정 시각이 지난 pending 을 전부, 오래된 순으로 돌려준다.
+
+    같은 글의 캐러셀/릴스는 각각 독립된 항목으로 취급한다.
+    """
+    due: list[tuple[str, dict, str]] = []
+    for e in q:
+        if (e.get("status") == "pending"
+                and datetime.fromisoformat(e["publish_at"]) <= now):
+            due.append(("carousel", e, e["publish_at"]))
+        if (e.get("reel_status") == "pending"
+                and e.get("reel_publish_at")
+                and datetime.fromisoformat(e["reel_publish_at"]) <= now):
+            due.append(("reel", e, e["reel_publish_at"]))
+    due.sort(key=lambda c: c[2])
+    return due
 
 
-def pick_due_reel(q: list[dict], now: datetime) -> dict | None:
-    """예정 시각이 지난 pending 중 가장 오래된 1건 (릴스)."""
-    due = [e for e in q
-           if e.get("reel_status") == "pending"
-           and e.get("reel_publish_at")
-           and datetime.fromisoformat(e["reel_publish_at"]) <= now]
-    return min(due, key=lambda e: e["reel_publish_at"]) if due else None
+def publish_entry(kind: str, entry: dict, q: list[dict], ig_id: str, token: str,
+                  base: str, dry: bool) -> None:
+    """1건을 발행하고 결과를 큐에 즉시 기록한다.
+
+    save_queue 를 건건이 부르는 게 핵심이다. 여러 건을 도는 중에 러너가 죽어도,
+    이미 인스타에 나간 글은 published 로 남아야 다음 실행이 같은 글을 또 올리지
+    않는다(2026-08-22 bib-gourmand 중복 발행 참고).
+    """
+    spec_path = os.path.join(ROOT, "content", f"{entry['slug']}.json")
+    spec = json.load(open(spec_path, encoding="utf-8"))
+
+    if kind == "reel":
+        media_id = publish_reel(spec, ig_id, token, base, dry=dry)
+        if media_id and entry in q:
+            entry["reel_status"] = "published"
+            entry["reel_media_id"] = media_id
+            entry["reel_published_at"] = datetime.now(KST).isoformat()
+            entry.pop("error", None)
+            save_queue(q)
+        return
+
+    media_id = publish(spec, ig_id, token, base, dry=dry)
+    if media_id and entry in q:
+        entry["status"] = "published"
+        entry["media_id"] = media_id
+        entry["published_at"] = datetime.now(KST).isoformat()
+        entry.pop("error", None)
+        save_queue(q)
 
 
 def main():
@@ -241,6 +281,10 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--slug", help="큐를 무시하고 특정 글 발행")
     ap.add_argument("--reel", action="store_true", help="캐러셀 대신 릴스(mp4)로 발행 (--slug 필수)")
+    ap.add_argument("--max", type=int, default=DEFAULT_MAX_PER_RUN,
+                    help=f"한 실행에서 발행할 최대 건수 (기본 {DEFAULT_MAX_PER_RUN}, 0이면 무제한)")
+    ap.add_argument("--delay", type=int, default=DEFAULT_DELAY,
+                    help=f"연속 발행 사이 대기 초 (기본 {DEFAULT_DELAY})")
     args = ap.parse_args()
 
     if args.reel and not args.slug:
@@ -260,42 +304,50 @@ def main():
     q = load_queue()
     now = datetime.now(KST)
 
+    # --slug 는 사람이 특정 글을 콕 집어 올리는 경로다. 큐를 무시하고 1건만.
     if args.slug:
-        entry = next((e for e in q if e["slug"] == args.slug), {"slug": args.slug, "status": "pending"})
-    else:
-        # 큐에서 캐러셀/릴스 중 가장 먼저 발행할 차례인 1건을 자동 선택한다.
-        carousel_entry = pick_due(q, now)
-        reel_entry = pick_due_reel(q, now)
-        candidates = []
-        if carousel_entry:
-            candidates.append(("carousel", carousel_entry, carousel_entry["publish_at"]))
-        if reel_entry:
-            candidates.append(("reel", reel_entry, reel_entry["reel_publish_at"]))
-        if not candidates:
-            print("발행할 차례인 글이 없습니다. 종료.")
-            return
-        kind, entry, _ = min(candidates, key=lambda c: c[2])
-        args.reel = kind == "reel"
-
-    spec_path = os.path.join(ROOT, "content", f"{entry['slug']}.json")
-    spec = json.load(open(spec_path, encoding="utf-8"))
-
-    if args.reel:
-        media_id = publish_reel(spec, ig_id, token, base, dry=args.dry_run)
-        if media_id and entry in q:
-            entry["reel_status"] = "published"
-            entry["reel_media_id"] = media_id
-            entry["reel_published_at"] = now.isoformat()
-            save_queue(q)
+        entry = next((e for e in q if e["slug"] == args.slug),
+                     {"slug": args.slug, "status": "pending"})
+        publish_entry("reel" if args.reel else "carousel", entry, q,
+                      ig_id, token, base, args.dry_run)
         return
 
-    media_id = publish(spec, ig_id, token, base, dry=args.dry_run)
+    # 자동 모드: 발행할 차례가 된 건을 오래된 순으로 전부 처리한다.
+    # 크론이 드롭돼 큐가 밀려도 다음 실행 한 번으로 따라잡히도록.
+    candidates = due_candidates(q, now)
+    if not candidates:
+        print("발행할 차례인 글이 없습니다. 종료.")
+        return
 
-    if media_id and entry in q:
-        entry["status"] = "published"
-        entry["media_id"] = media_id
-        entry["published_at"] = now.isoformat()
-        save_queue(q)
+    batch = candidates if args.max <= 0 else candidates[:args.max]
+    print(f"발행 대기 {len(candidates)}건 — 이번 실행에서 {len(batch)}건 처리")
+    if len(batch) < len(candidates):
+        skipped = [e["slug"] for _, e, _ in candidates[len(batch):]]
+        print(f"⚠️ --max {args.max} 상한으로 {len(skipped)}건은 이번에 건너뜁니다 "
+              f"(다음 실행에서 이어서 발행): {', '.join(skipped)}")
+
+    failed: list[str] = []
+    for i, (kind, entry, _) in enumerate(batch, 1):
+        print(f"\n[{i}/{len(batch)}] {entry['slug']} ({kind})")
+        try:
+            publish_entry(kind, entry, q, ig_id, token, base, args.dry_run)
+        except Exception as e:
+            # 1건이 깨져도 나머지는 계속 발행한다. 실패한 건은 pending 으로 남겨
+            # 다음 실행이 재시도하되, error 를 남겨 눈에 띄게 한다.
+            msg = str(e).splitlines()[0]
+            print(f"❌ {entry['slug']} 발행 실패: {msg}", file=sys.stderr)
+            failed.append(entry["slug"])
+            if entry in q and not args.dry_run:
+                entry["error"] = msg
+                save_queue(q)
+            continue
+
+        if i < len(batch) and args.delay > 0 and not args.dry_run:
+            print(f"  다음 발행까지 {args.delay}초 대기")
+            time.sleep(args.delay)
+
+    if failed:
+        sys.exit(f"발행 실패 {len(failed)}건: {', '.join(failed)}")
 
 
 if __name__ == "__main__":
