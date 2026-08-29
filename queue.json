@@ -254,5 +254,11 @@
     "status": "published",
     "media_id": "18221856250309941",
     "published_at": "2026-08-29T07:56:16.984684+09:00"
+  },
+  {
+    "slug": "2026-08-29-mhs-preview",
+    "pillar": "ai_news",
+    "publish_at": "2026-08-29T14:02:14+09:00",
+    "status": "pending"
   }
 ]
