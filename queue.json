@@ -262,5 +262,11 @@
     "status": "published",
     "media_id": "17988950190013739",
     "published_at": "2026-08-29T16:02:08.212710+09:00"
+  },
+  {
+    "slug": "2026-08-30-novelty-7min",
+    "pillar": "relationships",
+    "publish_at": "2026-08-30T11:52:00+09:00",
+    "status": "pending"
   }
 ]
