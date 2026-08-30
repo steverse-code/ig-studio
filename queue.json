@@ -270,5 +270,11 @@
     "status": "published",
     "media_id": "18104326870939002",
     "published_at": "2026-08-30T14:53:42.837559+09:00"
+  },
+  {
+    "slug": "2026-08-30-if-then-plans",
+    "pillar": "success",
+    "publish_at": "2026-08-30T20:01:46+09:00",
+    "status": "pending"
   }
 ]
