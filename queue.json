@@ -359,6 +359,7 @@
     "slug": "2026-09-05-nvidia-pair",
     "pillar": "ai_news",
     "publish_at": "2026-09-05T11:19:15+09:00",
-    "status": "pending"
+    "status": "pending",
+    "error": "POST https://graph.instagram.com/v24.0/17841439664672362/media → HTTP 400"
   }
 ]
