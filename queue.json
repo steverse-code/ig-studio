@@ -397,5 +397,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-09-08T11:25:16+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-08-six-hundred-thousand",
+    "pillar": "ai_news",
+    "publish_at": "2026-09-08T19:25:02+09:00",
+    "status": "pending"
   }
 ]
