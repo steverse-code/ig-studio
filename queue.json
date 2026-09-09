@@ -403,5 +403,11 @@
     "pillar": "ai_news",
     "publish_at": "2026-09-08T19:25:02+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-09-sixty-nine-breweries",
+    "pillar": "food",
+    "publish_at": "2026-09-09T11:28:17+09:00",
+    "status": "pending"
   }
 ]
