@@ -433,5 +433,11 @@
     "pillar": "fashion",
     "publish_at": "2026-09-11T11:25:11+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-11-forty-five-improved",
+    "pillar": "aging_news",
+    "publish_at": "2026-09-11T19:22:38+09:00",
+    "status": "pending"
   }
 ]
