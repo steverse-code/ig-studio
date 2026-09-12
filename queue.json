@@ -439,5 +439,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-09-11T19:22:38+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-12-active-listening-zero",
+    "pillar": "ai_news",
+    "publish_at": "2026-09-12T11:30:07+09:00",
+    "status": "pending"
   }
 ]
