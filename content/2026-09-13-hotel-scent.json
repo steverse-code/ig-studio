@@ -1,0 +1,28 @@
+{
+  "slug": "2026-09-13-hotel-scent",
+  "pillar": "lifestyle",
+  "handle": "@your_ground_zero",
+  "caption": "호텔 문을 나선 뒤에도 기억에 남는 것이 있습니다. 공간도, 서비스도 아닌 ‘향’입니다.\n\n후각 정보는 감정과 기억에 관여하는 편도체·해마와 긴밀히 연결됩니다. 그래서 일부 호텔은 로비부터 객실까지 같은 향을 설계하고, 그 향을 캔들·디퓨저·향수로 판매합니다. 숙박이 끝난 뒤에도 경험이 집에서 계속되도록 말이죠.\n\n좋은 호텔 향은 단순히 강한 향이 아닙니다. 공간의 재료와 조명, 서비스가 말하는 것과 같은 언어를 쓰는 향입니다.\n\n다음 호텔에서는 로비의 향을 한 번 기억해 보세요.",
+  "hashtags": [
+    "#호텔",
+    "#럭셔리호텔",
+    "#시그니처향",
+    "#향기마케팅",
+    "#공간브랜딩",
+    "#호텔인테리어",
+    "#라이프스타일",
+    "#브랜드경험",
+    "#후각",
+    "#디자인",
+    "#GroundZero"
+  ],
+  "slides": [
+    {"type": "point", "title": "호텔은 왜 향까지 디자인할까?", "body": "cover"},
+    {"type": "point", "title": "향과 기억", "body": "memory"},
+    {"type": "point", "title": "후각과 뇌", "body": "brain"},
+    {"type": "point", "title": "일관된 경험", "body": "consistency"},
+    {"type": "point", "title": "집으로 이어지는 향", "body": "takehome"},
+    {"type": "point", "title": "좋은 호텔 향", "body": "quality"},
+    {"type": "point", "title": "다음 호텔에서는", "body": "close"}
+  ]
+}
