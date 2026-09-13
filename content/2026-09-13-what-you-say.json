@@ -1,0 +1,103 @@
+{
+  "slug": "2026-09-13-what-you-say",
+  "pillar": "relationships",
+  "handle": "@your_ground_zero",
+  "publish_at": "2026-09-13T11:31:00+09:00",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "연애심리",
+      "headline": "같은 주제로 싸운 58쌍\n갈린 건 하나였습니다",
+      "subline": "10분짜리 말다툼을 두 번 녹화했습니다. 만족도를 가른 그 하나는 스마트폰이 아니었습니다",
+      "anchor": "58쌍"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "설명력",
+      "value": "9%",
+      "label": "상대를 인정하는 대화 방식이 설명한\n대화 만족도의 차이",
+      "note": "데이팅 커플 58쌍(116명)이 실제로 반복해 싸우던 주제로 10분씩 두 번 대화했습니다. 경청·인정 같은 긍정적 대화 행동의 설명력은 R²=.09 (b=0.48, p<.001). Roaché 외(2020), Human Communication & Technology 1(2)."
+    },
+    {
+      "type": "list",
+      "title": "같은 대화에서, 무엇이 얼마나 설명했나",
+      "items": [
+        {
+          "t": "긍정적인 대화 방식 — 9%",
+          "d": "상대 말을 인정하고 받아주는 행동. b = 0.48, p < .001"
+        },
+        {
+          "t": "부정적인 대화 방식 — 6%",
+          "d": "비난하고 방어하는 행동. b = −0.38, p < .001"
+        },
+        {
+          "t": "스마트폰이 있고 없고 — 0.2%",
+          "d": "b = −0.07, p = .65. 통계적으로 0과 구별되지 않았습니다"
+        }
+      ]
+    },
+    {
+      "type": "point",
+      "index": "04",
+      "title": "'테이블 위의 폰만 치워도'는 어디서 왔나",
+      "body": "2013년 한 실험이 처음 만난 사람 37쌍·34쌍을 앉혀놓고, 아무도 쓰지 않는 폰이 테이블에 놓여 있기만 해도 친밀감·신뢰·공감이 낮아진다고 보고했습니다. '폰을 치워라'의 근거가 된 연구입니다.\n\n2021년 356명(136개 조)으로 다시 해본 연구는 관계의 질(p=.46), 신뢰(p=.88), 친밀감(p=.77), 공감(p=.50) 어디에서도 그 차이를 찾지 못했습니다."
+    },
+    {
+      "type": "list",
+      "title": "그래서 남는 선택지",
+      "items": [
+        {
+          "t": "폰을 치우는 일에 의지를 쓰지 않아도 됩니다",
+          "d": "기기를 치운 조건과 손에 쥔 조건의 만족도 차이는 잡히지 않았습니다. 설명력 0.2%"
+        },
+        {
+          "t": "갈린 지점은 싸우는 동안의 말과 태도였습니다",
+          "d": "인정하는 행동이 9%, 비난과 방어가 6%를 설명했습니다. 폰의 45배와 30배입니다"
+        },
+        {
+          "t": "폰이 문제가 되는 건 '방해'로 번질 때입니다",
+          "d": "기혼·동거 여성 143명 조사에서, 기기로 인한 방해는 기기 사용을 둘러싼 갈등을 거쳐 만족도와 이어졌습니다"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "재현에 실패했다는 건 효과가 없다는 증명이 아닙니다. 58쌍은 작은 표본이고 평균 20.5세 대학생 커플이었으며, 원 연구가 본 건 처음 만난 사이였습니다.\n\n다만 방향은 일관됩니다. 폰의 존재만으로 생기는 효과는 있다 해도, 찾기 어려울 만큼 작습니다.",
+      "by": "재현 연구 저자들의 표현 — \"적어도, 예전에 가정했던 것보다 찾기 어렵다\""
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "Roaché, D. J., Caughlin, J. P., Wang, N., & Pusateri, K. P. (2020). The presence of a mobile phone does not (necessarily) change the fundamental processes of face-to-face relational conflict. Human Communication & Technology, 1(2), 36–59 — 데이팅 커플 58쌍(116명), 평균 20.5세, 교제 약 15개월. 10분 갈등 대화 2회 녹화, 기기 없음·소지·손에 쥠 3개 조건 무작위 배정, 다층모형 분석",
+        "Przybylski, A. K., & Weinstein, N. (2013). Can you connect with me now? Journal of Social and Personal Relationships, 30(3), 237–246. doi:10.1177/0265407512453827 — 처음 만난 사이 37쌍·34쌍을 대상으로 한 실험 2건. 폰의 '단순한 존재' 효과를 보고한 원 연구",
+        "Linares, C., & Sellier, A.-L. (2021). How bad is the mere presence of a phone? A replication of Przybylski and Weinstein (2013) and an extension to creativity. PLOS ONE, 16(6), e0251451. doi:10.1371/journal.pone.0251451 — 참가자 356명·136개 조. 관계의 질·신뢰·친밀감·공감 모두 재현 실패",
+        "McDaniel, B. T., & Coyne, S. M. (2016). 'Technoference': The interference of technology in couple relationships and implications for women's personal and relational well-being. Psychology of Popular Media Culture, 5(1), 85–98 — 기혼·동거 여성 143명. 단면 자기보고 조사라 인과는 아닙니다"
+      ],
+      "cta": "저장해두고, 다음에 '폰 좀 내려놔' 소리가 나올 때 한 번 더 보세요"
+    }
+  ],
+  "caption": "같은 주제로 싸운 커플 58쌍에서, 대화 만족도를 가른 건 스마트폰이 아니었습니다.\n\n10분짜리 말다툼을 두 번 녹화했더니 인정하는 대화 방식이 9%, 비난과 방어가 6%를 설명했습니다. 폰의 유무는 0.2%였습니다.\n(Human Communication & Technology, 2020)\n\n작은 표본이라 '폰은 무해하다'의 증명은 아닙니다.\n\n출처는 마지막 장에. 저장해두고 한 번 더 보세요.",
+  "hashtags": [
+    "#연애",
+    "#인간관계",
+    "#자기관리",
+    "#라이프스타일",
+    "#연애심리",
+    "#관계심리학",
+    "#커플",
+    "#연애고민",
+    "#부부생활",
+    "#결혼생활",
+    "#심리학",
+    "#대화법",
+    "#근거기반",
+    "#갈등해결",
+    "#소통의기술",
+    "#논문리뷰",
+    "#관계연구",
+    "#재현성",
+    "#경청",
+    "#커플대화"
+  ]
+}
