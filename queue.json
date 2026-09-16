@@ -493,5 +493,11 @@
     "pillar": "ai_news",
     "publish_at": "2026-09-15T19:48:14+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-16-address-not-chef",
+    "pillar": "food",
+    "publish_at": "2026-09-16T11:44:42+09:00",
+    "status": "pending"
   }
 ]
