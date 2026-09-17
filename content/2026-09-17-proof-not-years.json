@@ -1,0 +1,108 @@
+{
+  "slug": "2026-09-17-proof-not-years",
+  "pillar": "success",
+  "handle": "@your_ground_zero",
+  "publish_at": "2026-09-17T11:48:27+09:00",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "성공법",
+      "headline": "연차를 채운 사람과\n보여줄 게 있는 사람",
+      "subline": "수십 년 쓰인 채용 예측력 표를\n다시 계산한 결과입니다.",
+      "anchor": ".07"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "핵심 수치",
+      "value": ".07",
+      "label": "입사 전 경력 연수가\n입사 후 직무 성과를\n예측한 정도",
+      "note": "1998년 요약표에서는 .18이던 값입니다. 상관 .07은 성과 변량의 0.5%에 해당합니다. 원 메타분석(44개 표본 11,785명)에서도 직무 성과는 .06, 이직은 .00이었습니다. (Sackett et al. J Appl Psychol. 2022 / Van Iddekinge et al. Personnel Psychology. 2019)"
+    },
+    {
+      "type": "list",
+      "title": "이 숫자는 큰 걸까",
+      "items": [
+        {
+          "t": "구조화 면접 .42 — 새 1위",
+          "d": "1998년 표에서는 .51이었습니다. 값은 내려갔지만 순위는 올라가 전체 1위가 됐습니다."
+        },
+        {
+          "t": "직무 지식 검사 .40 · 경험적 바이오데이터 .38",
+          "d": "바이오데이터는 .35에서 오히려 올라간 드문 항목입니다."
+        },
+        {
+          "t": "작업 표본 .33 · 지능 검사 .31",
+          "d": "1998년에는 각각 .54와 .51로 표의 맨 위에 있던 두 항목입니다."
+        },
+        {
+          "t": "비구조화 면접 .19 · 경력 연수 .07",
+          "d": "그냥 대화하듯 보는 면접과 이력서의 연차입니다. 채용에서 가장 많이 쓰이는 두 가지입니다."
+        }
+      ]
+    },
+    {
+      "type": "point",
+      "index": "04",
+      "title": "숫자가 아니라 보정이 틀렸던 것",
+      "body": "지원자 집단보다 합격자 집단의 점수 범위가 좁아서, 연구자들은 이를 되돌리는 보정을 해왔습니다. 그런데 그 보정 계수는 지원자 자료가 있는 예측 설계에서 나온 값인데, 자료가 없는 재직자 동시측정 연구에까지 똑같이 적용됐습니다. 메타분석에 들어간 연구의 약 80%가 후자입니다.\n\n그 결과 대부분의 값이 .10~.20씩 부풀려져 있었습니다. 저자들은 자신들도 이 방식을 써왔고 학생들에게 가르쳤다고 논문에 적었습니다."
+    },
+    {
+      "type": "list",
+      "title": "표가 갈라놓은 것 셋",
+      "items": [
+        {
+          "t": "면접은 구조를 만든 쪽이 갈랐다",
+          "d": "같은 면접인데 구조화 .42, 비구조화 .19. 질문을 미리 정하고 같은 기준으로 채점했는지의 차이입니다."
+        },
+        {
+          "t": "아는 것이 머리 좋은 것보다 앞섰다",
+          "d": "직무 지식 검사 .40이 지능 검사 .31보다 높았습니다. 그 일에서 실제로 쓰는 지식을 묻는 쪽입니다."
+        },
+        {
+          "t": "연차 한 줄과 작업 표본 하나",
+          "d": "작업 표본은 .33, 경력 연수는 .07이었습니다. 같은 한 칸을 무엇으로 채우는지가 여기서 갈립니다."
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "이 값들은 전부 평균입니다.\n구조화 면접은 표준편차 .19,\n하위 80% 신뢰값 .18이었고\n비구조화 면접은 -.01이었습니다.\n같은 방법도 현장에 따라\n크게 갈린다는 뜻입니다.",
+      "by": "Sackett, Zhang, Berry & Lievens, 2023 — 평균만 보지 말라는 저자들의 당부"
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "Sackett PR, Zhang C, Berry CM, Lievens F. Revisiting meta-analytic estimates of validity in personnel selection: Addressing systematic overcorrection for restriction of range. Journal of Applied Psychology. 2022;107(11):2040-2068. doi:10.1037/apl0000994",
+        "Sackett PR, Zhang C, Berry CM, Lievens F. Revisiting the design of selection systems in light of new findings regarding the validity of widely used predictors. Industrial and Organizational Psychology. 2023. doi:10.1017/iop.2023.24 (1998년 값과의 비교표)",
+        "Van Iddekinge CH, Arnold JD, Frieder RE, Roth PL. A meta-analysis of the criterion-related validity of prehire work experience. Personnel Psychology. 2019;72(4):571-598.",
+        "* 비교 기준인 1998년 값은 Schmidt & Hunter(1998) 요약표이며, 2023년 논문의 비교표에서 인용했습니다.",
+        "* 모두 상관계수이고 인과가 아닙니다. 보정을 어떻게 할지를 두고 반론 논문이 발표돼 논쟁은 아직 끝나지 않았습니다."
+      ],
+      "cta": "저장해두고\n다음 이력서를 열 때 꺼내보세요"
+    }
+  ],
+  "caption": "이력서의 경력 연수는 성과를 거의 예측하지 못했습니다.\n\n수십 년 쓰인 채용 예측력 표를 다시 계산한 결과입니다. 경력 연수는 .18에서 .07로, 지능 검사는 .51에서 .31로 내려갔고 구조화 면접이 .42로 1위가 됐습니다.\n(Journal of Applied Psychology, 2022)\n\n상관계수이고, 보정 방식을 두고 반론도 나와 있습니다.\n\n출처는 마지막 장에. 저장해두고 한 번 더 보세요.",
+  "hashtags": [
+    "#자기계발",
+    "#자기관리",
+    "#라이프스타일",
+    "#커리어",
+    "#이직준비",
+    "#채용",
+    "#면접준비",
+    "#이력서",
+    "#직장인",
+    "#커리어개발",
+    "#일잘러",
+    "#인사담당자",
+    "#취업준비",
+    "#근거기반",
+    "#논문리뷰",
+    "#메타분석",
+    "#조직심리학",
+    "#인사평가",
+    "#구조화면접",
+    "#의사결정"
+  ]
+}
