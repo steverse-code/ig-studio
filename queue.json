@@ -523,5 +523,11 @@
     "pillar": "fashion",
     "publish_at": "2026-09-18T11:34:58+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-18-only-the-walking",
+    "pillar": "aging_news",
+    "publish_at": "2026-09-18T19:24:03+09:00",
+    "status": "pending"
   }
 ]
