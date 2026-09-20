@@ -547,5 +547,11 @@
     "pillar": "relationships",
     "publish_at": "2026-09-20T11:45:41+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-20-lone-wolf-promoted",
+    "pillar": "success",
+    "publish_at": "2026-09-20T19:25:53+09:00",
+    "status": "pending"
   }
 ]
