@@ -1,0 +1,90 @@
+{
+  "slug": "2026-09-21-not-the-amount",
+  "pillar": "longevity",
+  "handle": "@your_ground_zero",
+  "publish_at": "2026-09-21T11:41:54+09:00",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "롱제비티",
+      "headline": "단백질 20g을 더 먹였습니다\n갈린 건 양이 아니었습니다",
+      "subline": "평균 73.9세 허약 노인 295명을 12주간 무작위 배정했습니다 —\n두 집단 모두 근육이 실패하는 지점까지 근력운동을 했고,\n한쪽만 매일 단백질 20g을 더 받았습니다.",
+      "anchor": "20g"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "핵심 수치",
+      "value": "4.2kg",
+      "label": "단백질을 더 받은 쪽이 12주 뒤\n레그프레스 1RM에서 더 얻은 무게 —\n95% 신뢰구간은 −0.3에서 8.8이었습니다",
+      "note": "무작위 대조시험의 2차 분석. 재가 돌봄 서비스를 받거나 틸뷔르흐 허약 지표 5점 이상인 지역사회 거주 노인 295명(평균 73.9±6.0세, 여성 69%)을 12주간 배정하고 244명을 분석. 두 집단 모두 주 2회 1:1 지도 아래 전신 근력운동을 근육 실패 지점까지 수행했고, 한쪽만 영양 상담과 유청 단백질 20g/일을 추가로 받았습니다. 레그프레스 1RM 집단 간 차이 4.2kg(95% CI −0.3~8.8, p=0.069)로 유의하지 않았습니다 · Biersteker EJM 외. J Nutr Health Aging. 2026;30:100838"
+    },
+    {
+      "type": "list",
+      "title": "4.2kg은\n어디쯤인가",
+      "items": [
+        { "t": "단백질은 실제로 늘었습니다", "d": "개입군이 대조군보다 하루 0.4g/kg 더 먹었습니다 (95% CI 0.3~0.5, p<0.001). 평균 1.4g/kg에 도달했으니 안 먹어서 생긴 결과가 아닙니다" },
+        { "t": "근육량 차이는 0.1kg", "d": "사지 제지방량 집단 간 차이 0.1kg (95% CI −0.1~0.4). 신뢰구간이 0을 지나갑니다" },
+        { "t": "신체 기능은 오히려 −0.2점", "d": "SPPB 점수 집단 간 차이 −0.2 (95% CI −0.5~0.2). 유의하지 않지만 방향조차 반대쪽이었습니다" },
+        { "t": "운동 강도를 바꿔도 같았습니다", "d": "저·중저·중고·고 네 강도군으로 나눠도 단백질 효과는 달라지지 않았습니다 (p≥0.05). 다만 20% 강도군은 실패 지점 도달이 어려워 제외됐습니다" },
+        { "t": "선행 메타분석도 같은 방향을 봤습니다", "d": "49개 시험 1,863명 — 단백질 보충의 제지방량 효과는 나이가 한 살 늘수록 0.01kg씩 줄었습니다 (−0.02~−0.00, p=0.002) (BJSM, 2018)" }
+      ]
+    },
+    {
+      "type": "point",
+      "index": "01",
+      "title": "단백질이 움직인 건\n모자랐던 사람 쪽이었습니다",
+      "body": "통념은 단순합니다. 나이 들면 단백질을 더 넣어야 근육이 붙는다. 이 시험은 그 문장을 절반만 지지했습니다.\n\n전체에서는 아무 차이가 없었지만, 원래 먹던 양으로 나누자 그림이 갈렸습니다. 시작 시점에 1.2g/kg 미만을 먹던 181명에게서는 레그프레스가 6.4kg 더 늘었습니다 (95% CI 1.3~11.4, p=0.013). 0.8g/kg 이하였던 52명에서는 10.9kg이었습니다 (1.5~20.4, p=0.025).\n\n섭취량과 개입 사이의 상호작용은 근력에서만 유의했습니다 (p=0.038). 근육량과 신체 기능에서는 이 갈림조차 나오지 않았습니다.\n\n더한 만큼 붙는 게 아니라, 모자란 자리를 메울 때 움직였습니다."
+    },
+    {
+      "type": "list",
+      "title": "그래서 어디를\n먼저 보게 되는가",
+      "items": [
+        { "t": "효과가 갈린 경계는 1.2g/kg입니다", "d": "체중 60kg이면 하루 72g, 70kg이면 84g. 이 선 아래에 있던 사람들에게서만 근력이 갈렸습니다" },
+        { "t": "권고선은 이미 그 자리에 있습니다", "d": "PROT-AGE는 65세 넘는 사람에게 하루 최소 1.0~1.2g/kg을, 운동하는 사람에게는 1.2g/kg 이상을 권합니다 (JAMDA, 2013)" },
+        { "t": "위로 갈수록 곡선이 눕습니다", "d": "선행 메타분석에서 총 섭취량 1.62g/kg을 넘으면 제지방량이 더 늘지 않았습니다 (BJSM, 2018). 이 시험 개입군의 도달 평균이 1.4g/kg였습니다" },
+        { "t": "운동이 빠진 조건은 아니었습니다", "d": "두 집단 모두 주 2회 1:1 지도 아래 실패 지점까지 들었습니다. 단백질만 따로 떼어 준 시험이 아닙니다" },
+        { "t": "대상이 누구였는지가 남습니다", "d": "재가 돌봄을 받거나 허약 지표 5점 이상인 노인들입니다. 건강한 성인에게 그대로 옮길 수 있는 숫자가 아닙니다" }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "이건 사전에 계획된 1차 분석이 아니라\n2차 분석입니다.\n\n섭취량으로 나눈 집단 비교는\n논문 스스로 탐색적이라고\n적어두었습니다.\n\n비교를 여러 번 할수록\n우연히 유의해질 확률이 올라갑니다.\n\n섭취량은 3일치 자가 기록으로 쟀고,\n경계선 근처의 분류는\n흔들릴 수 있습니다.",
+      "by": "논문 원문 표현 — \"The presence of multiple subgroup comparisons increases the risk of type I error, and the observed findings should therefore be interpreted with caution.\""
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "Biersteker EJM 외. Effect of a protein intervention during resistance training with varying training intensities on muscle outcomes in frail community-dwelling older adults: a randomized controlled trial. J Nutr Health Aging. 2026;30:100838 — 허약 노인 295명 배정, 12주, 244명 분석 (doi:10.1016/j.jnha.2026.100838)",
+        "위 시험 등록번호 NL-OMON54919 (ICTRP), 등록일 2021-02-09",
+        "Morton RW 외. A systematic review, meta-analysis and meta-regression of the effect of protein supplementation on resistance training-induced gains in muscle mass and strength in healthy adults. Br J Sports Med. 2018;52(6):376-384 — 49개 시험 1,863명",
+        "Bauer J 외. Evidence-based recommendations for optimal dietary protein intake in older people: a position paper from the PROT-AGE Study Group. J Am Med Dir Assoc. 2013;14(8):542-559",
+        "* 수치와 신뢰구간은 Europe PMC의 논문 전문에서 직접 대조했습니다."
+      ],
+      "cta": "저장해두고\n다음에 단백질 보충제를 집기 전에\n한 번 더 꺼내보세요"
+    }
+  ],
+  "caption": "단백질을 매일 20g 더 먹인 쪽과 아닌 쪽이 12주 뒤에 갈리지 않았습니다.\n\n허약 노인 295명을 무작위 배정한 결과입니다. 레그프레스 1RM 차이 4.2kg (95% CI −0.3~8.8, p=0.069).\n(J Nutr Health Aging, 2026)\n\n갈린 건 원래 1.2g/kg 미만을 먹던 사람들뿐이었고, 그마저 탐색적 분석입니다.\n\n출처는 마지막 장에. 저장해두고 한 번 더 보세요.",
+  "hashtags": [
+    "#라이프스타일",
+    "#자기관리",
+    "#건강관리",
+    "#단백질",
+    "#근력운동",
+    "#롱제비티",
+    "#건강수명",
+    "#근거기반",
+    "#저속노화",
+    "#근감소증",
+    "#시니어건강",
+    "#단백질보충제",
+    "#노인영양",
+    "#논문리뷰",
+    "#무작위대조시험",
+    "#신뢰구간",
+    "#사르코페니아",
+    "#유청단백질",
+    "#단백질섭취량",
+    "#1RM"
+  ]
+}
