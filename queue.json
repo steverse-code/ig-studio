@@ -571,5 +571,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-09-22T11:44:29+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-22-fake-target-real-three",
+    "pillar": "ai_news",
+    "publish_at": "2026-09-22T19:43:19+09:00",
+    "status": "pending"
   }
 ]
