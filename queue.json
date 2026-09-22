@@ -565,5 +565,11 @@
     "pillar": "fashion",
     "publish_at": "2026-09-21T20:40:05+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-22-five-aged-instead",
+    "pillar": "aging_news",
+    "publish_at": "2026-09-22T11:44:29+09:00",
+    "status": "pending"
   }
 ]
