@@ -613,5 +613,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-09-25T19:58:14+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-09-26-one-of-eleven",
+    "pillar": "ai_news",
+    "publish_at": "2026-09-26T11:53:21+09:00",
+    "status": "pending"
   }
 ]
