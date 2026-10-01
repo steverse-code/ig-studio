@@ -673,5 +673,11 @@
     "pillar": "relationships",
     "publish_at": "2026-09-30T20:45:07+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-01-the-coin-said-quit",
+    "pillar": "success",
+    "publish_at": "2026-10-01T12:30:00+09:00",
+    "status": "pending"
   }
 ]
