@@ -691,5 +691,11 @@
     "pillar": "fashion",
     "publish_at": "2026-10-02T12:35:00+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-02-fewer-events-same-years",
+    "pillar": "aging_news",
+    "publish_at": "2026-10-02T20:43:13+09:00",
+    "status": "pending"
   }
 ]
