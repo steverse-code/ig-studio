@@ -703,5 +703,11 @@
     "pillar": "ai_news",
     "publish_at": "2026-10-03T12:13:17+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-03-menu-of-one",
+    "pillar": "food",
+    "publish_at": "2026-10-03T19:59:02+09:00",
+    "status": "pending"
   }
 ]
