@@ -721,5 +721,11 @@
     "pillar": "success",
     "publish_at": "2026-10-04T20:39:42+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-05-only-one-direction",
+    "pillar": "longevity",
+    "publish_at": "2026-10-05T12:24:59+09:00",
+    "status": "pending"
   }
 ]
