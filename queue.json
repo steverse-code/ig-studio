@@ -739,5 +739,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-10-06T13:12:25+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-06-forty-and-seventeen",
+    "pillar": "ai_news",
+    "publish_at": "2026-10-06T21:34:38+09:00",
+    "status": "pending"
   }
 ]
