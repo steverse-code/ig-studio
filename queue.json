@@ -751,5 +751,11 @@
     "pillar": "food",
     "publish_at": "2026-10-07T12:41:54+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-07-rate-was-right",
+    "pillar": "relationships",
+    "publish_at": "2026-10-07T21:31:25+09:00",
+    "status": "pending"
   }
 ]
