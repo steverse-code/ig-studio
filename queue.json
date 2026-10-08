@@ -757,5 +757,11 @@
     "pillar": "relationships",
     "publish_at": "2026-10-07T21:31:25+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-08-random-felt-the-same",
+    "pillar": "success",
+    "publish_at": "2026-10-08T12:53:19+09:00",
+    "status": "pending"
   }
 ]
