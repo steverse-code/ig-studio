@@ -799,5 +799,11 @@
     "pillar": "relationships",
     "publish_at": "2026-10-11T12:18:38+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-11-six-studies-left",
+    "pillar": "success",
+    "publish_at": "2026-10-11T20:58:27+09:00",
+    "status": "pending"
   }
 ]
