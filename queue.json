@@ -823,5 +823,11 @@
     "pillar": "aging_news",
     "publish_at": "2026-10-13T13:52:09+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-13-fifty-seven-after-seventy-three",
+    "pillar": "ai_news",
+    "publish_at": "2026-10-13T22:20:01+09:00",
+    "status": "pending"
   }
 ]
