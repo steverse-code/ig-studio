@@ -841,5 +841,11 @@
     "pillar": "relationships",
     "publish_at": "2026-10-14T20:00:03+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-15-only-when-finished",
+    "pillar": "success",
+    "publish_at": "2026-10-15T11:38:45+09:00",
+    "status": "pending"
   }
 ]
