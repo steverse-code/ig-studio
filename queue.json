@@ -859,5 +859,11 @@
     "pillar": "fashion",
     "publish_at": "2026-10-16T11:35:19+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-16-sixty-nine-and-sixteen",
+    "pillar": "aging_news",
+    "publish_at": "2026-10-16T19:31:21+09:00",
+    "status": "pending"
   }
 ]
