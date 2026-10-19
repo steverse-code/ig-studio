@@ -1,0 +1,106 @@
+{
+  "slug": "2026-10-19-one-of-these-two",
+  "pillar": "fashion",
+  "handle": "@your_ground_zero",
+  "publish_at": "2026-10-19T20:46:45+09:00",
+  "slides": [
+    {
+      "type": "cover",
+      "eyebrow": "패션 트렌드",
+      "headline": "'드라이클리닝'만 적힌 라벨은\n물세탁을 금지한 게 아닙니다",
+      "subline": "미국 연방 케어라벨 규정 16 CFR 423.6(b) — 둘 다 안전하면 라벨엔 한 가지만 적으면 됩니다. 그리고 같은 조항은 침묵이 경고가 아니라고 못 박아 둡니다.",
+      "anchor": "1"
+    },
+    {
+      "type": "stat",
+      "eyebrow": "16 CFR 423.6(b)",
+      "value": "1",
+      "label": "물세탁과 드라이클리닝이 둘 다 가능할 때\n라벨에 적어야 하는 세탁법의 수",
+      "note": "규정의 문장은 이렇습니다 — \"If either washing or drycleaning can be used on the product, the label need have only one of these instructions.\" FTC 가이드도 같은 말을 합니다. '드라이클리닝' 한 단어만으로 적법한 care instruction 이 되는지 묻는 FAQ 의 답은 \"Yes\" 입니다."
+    },
+    {
+      "type": "list",
+      "title": "같은 규정이 정해둔 다른 숫자들",
+      "items": [
+        {
+          "t": "온도 표기가 없는 'Machine wash' — 145°F(63°C)",
+          "d": "제423.1조 (d). 온도를 적지 않았다면 그 상한까지의 뜨거운 물을 상시 써도 되는 것으로 봅니다. 부록 A 는 hot 을 112~145°F, warm 을 87~111°F, cold 를 86°F 이하로 정의합니다"
+        },
+        {
+          "t": "규정이 정의한 '드라이클리닝' — 160°F(71°C) 열건조",
+          "d": "제423.1조 (c). 유기용제 세척에 더해 용제에 75% 상대습도까지의 수분 추가, 160°F 까지의 hot tumble drying, 스팀 프레스 마무리가 '드라이클리닝'이라는 한 단어에 들어 있습니다"
+        },
+        {
+          "t": "용제 이름 — 최소 1종",
+          "d": "제423.6조 (b)(2)(i). 드라이클리닝 지시에는 쓸 수 있는 용제를 최소 한 종류 적어야 하고, 모든 상용 용제가 가능할 때만 생략됩니다. 즉 용제가 적혀 있다면 그건 제한의 표시입니다"
+        },
+        {
+          "t": "다섯 공정을 모두 통과하면 — 영구 라벨 면제",
+          "d": "제423.8조 (d). 뜨거운 물 기계세탁·고온 건조·고온 다림질·모든 상용 표백제·모든 상용 용제 드라이클리닝이 전부 안전하다는 증거가 있으면 \"wash or dry clean, any normal method\" 표기로 갈음합니다"
+        }
+      ]
+    },
+    {
+      "type": "point",
+      "index": "04",
+      "title": "'Only' 한 단어가 증명 책임을 옮깁니다",
+      "body": "'드라이클리닝'과 '드라이클리닝 전용'을 같은 뜻으로 읽고 옷을 고르게 됩니다. 규정에서 두 라벨은 같은 물건이 아닙니다.\n\n경고는 지정된 단어로 씁니다 — 제423.6조 (b)(1)(v)(A)와 (b)(2)(ii)(A)는 경고가 \"Do not,\" \"No,\" \"Only\" 또는 그만큼 분명한 표현을 써야 한다고 적습니다. 그래서 'Dryclean Only'는 지시가 아니라 경고입니다. FTC 가이드의 문장은 더 직접적입니다 — \"You may label garments Dryclean Only, but only if you have evidence that washing will damage the garment.\"\n\n'Only' 가 없으면 반대가 됩니다. 제423.6조 (c)(2)는 \"침묵이 경고가 되지 않는 경우 피해의 증거를 가질 필요가 없다\"고 면제해 둡니다. 물세탁을 시험했는지 여부가 라벨에 남지 않는다는 뜻입니다."
+    },
+    {
+      "type": "list",
+      "title": "그래서 라벨 앞에서 달라지는 세 가지",
+      "items": [
+        {
+          "t": "'Only' 가 있는지부터 봅니다",
+          "d": "'Dryclean Only'는 물세탁이 옷을 손상시킨다는 증거를 요구받는 경고입니다. 'Dryclean' 또는 'Professionally dryclean'만 있으면 물세탁에 대해 아무것도 주장하지 않은 라벨입니다"
+        },
+        {
+          "t": "용제가 적혀 있으면 좁은 쪽입니다",
+          "d": "'Professionally dryclean: fluorocarbon or petroleum' 처럼 용제가 지정됐다면 다른 용제는 위험하다는 뜻입니다. 반대로 용제가 없으면 모든 상용 용제가 가능하다는 표시입니다"
+        },
+        {
+          "t": "쓸 수 없는 표현이 정해져 있습니다",
+          "d": "제423.6조 (b)(2)(i)은 'Drycleanable' 과 'Commercially Dryclean' 을 지시로 쓰지 못하게 합니다. FTC 가이드는 공정을 수정할 필요가 없는데 'Professionally dryclean' 만 쓰는 것도 적절한 지시가 아니라고 봅니다"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "text": "이건 미국 연방규정이고, 한국·EU 의 표시 체계는 따로 확인하지 않았습니다. 그리고 'Only' 가 없다는 것이 물세탁해도 된다는 보증은 아닙니다 — 규정은 침묵에 대해 증명 의무를 면제했을 뿐, 안전을 확인해 준 게 아닙니다. 라벨에 적힌 숫자들도 대부분 '이 온도까지는 괜찮다'는 상한이지 권장값이 아닙니다.",
+      "by": "16 CFR 423.6(c)(2) · 1983년 제정, 2000년 9월 1일 개정 발효"
+    },
+    {
+      "type": "source",
+      "title": "출처",
+      "sources": [
+        "16 CFR Part 423 「Care Labeling of Textile Wearing Apparel and Certain Piece Goods as Amended」. 48 FR 22743 (1983년 5월 20일), 65 FR 47275 (2000년 8월 2일) 개정. 제423.1·423.5·423.6·423.8조 및 부록 A. eCFR 이 이 환경에서 응답하지 않아 govinfo.gov 의 2024년판 공식 CFR XML 원문으로 확인",
+        "FTC, 「Clothes Captioning: Complying with the Care Labeling Rule」 (govinfo GOVPUB-FT-PURL-LPS15278). 'Writing Care Instructions'·'Reasonable Basis'·'Drycleaning Instructions'·FAQ 절. 1990년 이후 집행 16건, 과징금 최고 30만 달러, 건당 상한 1만 1천 달러로 기재",
+        "FTC v. Continental Gown Cleaning Service, Inc. 외, Docket No. 9287 (1998년 5월 20일). 'Dryclean Only by Zurcion Method' 라벨에 용제 표기가 없었고, 다른 모든 세탁법이 의류를 손상시킨다는 신뢰할 수 있는 증거가 없었다는 혐의"
+      ],
+      "cta": "라벨 읽는 기준이 하나 늘었다면\n저장해두고 다음 쇼핑 때 꺼내보세요"
+    }
+  ],
+  "caption": "'드라이클리닝'과 '드라이클리닝 전용'은 다른 라벨입니다.\n\n미국 케어라벨 규정은 둘 다 가능하면 한 가지만 적게 합니다. 'Only'를 붙이면 물세탁이 옷을 손상시킨다는 증거가 필요해집니다.\n(16 CFR 423.6, FTC 가이드)\n\n미국 연방규정이고, 'Only'가 없다는 건 안전하다는 보증이 아닙니다.\n\n출처는 마지막 장에. 저장해두고 한 번 더 보세요.",
+  "hashtags": [
+    "#패션",
+    "#스타일",
+    "#라이프스타일",
+    "#자기관리",
+    "#패션트렌드",
+    "#옷잘입는법",
+    "#쇼핑팁",
+    "#세탁법",
+    "#드라이클리닝",
+    "#라벨읽기",
+    "#케어라벨",
+    "#의류관리",
+    "#울코트",
+    "#캐시미어관리",
+    "#세탁기호",
+    "#섬유표시",
+    "#FTC",
+    "#미국규정",
+    "#근거기반",
+    "#원문확인"
+  ]
+}
