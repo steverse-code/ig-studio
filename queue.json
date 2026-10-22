@@ -925,5 +925,11 @@
     "pillar": "relationships",
     "publish_at": "2026-10-21T19:58:49+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-22-finished-sooner",
+    "pillar": "success",
+    "publish_at": "2026-10-22T11:47:13+09:00",
+    "status": "pending"
   }
 ]
