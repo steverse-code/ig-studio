@@ -943,5 +943,11 @@
     "pillar": "fashion",
     "publish_at": "2026-10-23T11:52:11+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-23-same-device-different-help",
+    "pillar": "aging_news",
+    "publish_at": "2026-10-23T19:52:11+09:00",
+    "status": "pending"
   }
 ]
