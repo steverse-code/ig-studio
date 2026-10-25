@@ -967,5 +967,11 @@
     "pillar": "relationships",
     "publish_at": "2026-10-25T11:37:15+09:00",
     "status": "pending"
+  },
+  {
+    "slug": "2026-10-25-even-the-worst-case",
+    "pillar": "success",
+    "publish_at": "2026-10-25T19:36:16+09:00",
+    "status": "pending"
   }
 ]
